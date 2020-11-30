@@ -1,3 +1,17 @@
+from typing import List
+
+
+class Product:
+
+    def __init__(self, product_description, qty='', price_each='', price_total=''):
+        self.product_description = product_description
+        self.qty = qty
+        self.price_each = price_each
+        self.price_total = price_total
+
+    def __str__(self):
+        return f'Product Description: {self.product_description}\nQuantity: {self.qty}\nPrice Each: ' \
+            f'{self.price_each}\nPrice Total: {self.price_total}\n'
 
 
 class Quote:
@@ -27,19 +41,6 @@ class Quote:
             f'Created: {self.date_created}\nExpiration Date: {self.expiration_date}\nSpecial Pricing Code: ' \
             f'{self.special_pricing_code}\nSubtotal: {self.subtotal}\nQuote Total: {self.quote_total}\n' \
             f'Contract Nsme: {self.contract_name}\n\n' + product_string
-
-
-class Product:
-
-    def __init__(self, product_description, qty='', price_each='', price_total=''):
-        self.product_description = product_description
-        self.qty = qty
-        self.price_each = price_each
-        self.price_total = price_total
-
-    def __str__(self):
-        return f'Product Description: {self.product_description}\nQuantity: {self.qty}\nPrice Each: ' \
-            f'{self.price_each}\nPrice Total: {self.price_total}\n'
 
 
 

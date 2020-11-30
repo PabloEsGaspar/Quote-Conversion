@@ -5,6 +5,7 @@ import codecs
 import smtplib
 from email.message import EmailMessage
 import time
+import json
 
 user = 'gtonnesen14@gmail.com'
 password = 'nobilityis'
@@ -24,7 +25,9 @@ def send_email(receiver_email, quote_object):
     msg['Subject'] = 'Quote Conversion Response - Kodama Group'
     msg['From'] = user
     msg['To'] = receiver_email
-    msg.set_content(f'{quote_object}\n\n\nKodama Group\nQuote Conversion Demo')  # sets body
+
+    json_quote = json.dumps(quote_object.__dict__, default=lambda o: o.__dict__, indent=4)
+    msg.set_content(f'See JSON string of the quote data below: \n{json_quote}\n\n\nKodama Group\nQuote Conversion Demo')  # sets body
     # with open('Attachment_dir\\test.pdf', 'rb') as f:  # adds attachment
     #     file_data = f.read()
     #     file_name = f.name
@@ -98,15 +101,35 @@ def generate_quote_object(file_path):
     """
     f = codecs.open(file_path, 'r')  # stores html in a string variable
     html_data = f.read()
-
     soup = BeautifulSoup(html_data, 'html.parser')  # scrape html for quote info and use it to make a quote object
 
-    quote_object = Quote(soup.find(id='quote_number').text.strip(), soup.find(id='purchaser_name').text.strip(),
-                         soup.find(id='purchaser_email').text.strip(), soup.find(id='purchaser_phone').text.strip(),
-                         soup.find(id='created_by').text.strip(), soup.find(id='date_created').text.strip(),
-                         soup.find(id='expiration_date').text.strip(), soup.find(id='special_pricing_code').text.strip()
-                         , soup.find(id='subtotal').text.strip(), soup.find(id='quote_total').text.strip(),
-                         soup.find(id='contract_name').text.strip(),
+    quote_number = soup.find("div", class_='grey-bg').find('div', class_='col6 ccol6 orderform').find_next_sibling \
+        ('div', class_='col6 ccol6 orderform').find('div', class_='form-2col order-inputs').find('span').text.strip()
+    purchaser_info = soup.find(class_='combined-detail').text.strip()
+    purchaser_info = purchaser_info[:-1]  # removes last character of string which is a ',' in this case
+    purchaser_info_list = purchaser_info.split(', ')
+    purchaser_name = purchaser_info_list[0]
+    purchaser_email = purchaser_info_list[1]
+    purchaser_phone = purchaser_info_list[2]
+    created_by = soup.find("div", class_='grey-bg').find('div', class_='col6 ccol6 orderform') \
+        .find('div', class_='form-2col order-inputs created-by').find('span').text.strip()
+    date_created = soup.find("div", class_='grey-bg').find('div', class_='col6 ccol6 orderform').find_next_sibling \
+        ('div', class_='col6 ccol6 orderform').find('div', class_='form-2col order-inputs').find_next_sibling \
+        ('div', class_='form-2col order-inputs').find('span').text.strip()
+    expiration_date = soup.find("div", class_='grey-bg').find('div', class_='col6 ccol6 orderform').find_next_sibling \
+        ('div', class_='col6 ccol6 orderform').find('div', class_='form-2col order-inputs').find_next_sibling \
+        ('div', class_='form-2col order-inputs').find_next_sibling('div', class_='form-2col order-inputs') \
+        .find('span').text.strip()
+    special_pricing_code = soup.find('div', id='total_breakdown').find('div', class_='left').find('div') \
+        .find_next_sibling('div').text.strip()
+    subtotal = soup.find('div', id='total_breakdown').find('td', class_='total_figures').text.strip()
+    quote_total = soup.find("div", class_='grey-bg').find('div', class_='col6 ccol6 orderform') \
+        .find('div', class_='form-2col order-inputs').find_next_sibling('div', class_='form-2col order-inputs') \
+        .find('span').text.strip()
+    contract_name = soup.find('div', class_='contract').find('p', class_='company-view').text.strip()
+
+    quote_object = Quote(quote_number, purchaser_name, purchaser_email, purchaser_phone, created_by, date_created,
+                         expiration_date, special_pricing_code, subtotal, quote_total, contract_name,
                          generate_list_of_products(soup))
 
     return quote_object
@@ -156,5 +179,7 @@ if __name__ == "__main__":  # MAIN METHOD
             print(f"deleting email b'{i}'")
             con.store(b_string, '+FLAGS', r'(\Deleted)')  # deletes email from inbox
 
-        time.sleep(30)  # wait 30 sec before beginning new iteration of while loop
+        sleep_time = 30
+        print(f'sleeping for {sleep_time} seconds')
+        time.sleep(sleep_time)  # wait 30 sec before beginning new iteration of while loop
 
