@@ -6,6 +6,8 @@ import smtplib
 from email.message import EmailMessage
 import time
 import json
+import pdfkit
+
 
 user = 'gtonnesen14@gmail.com'
 password = 'nobilityis'
@@ -28,16 +30,24 @@ def send_email(receiver_email, quote_object):
 
     json_quote = json.dumps(quote_object.__dict__, default=lambda o: o.__dict__, indent=4)
     msg.set_content(f'See JSON string of the quote data below: \n{json_quote}\n\n\nKodama Group\nQuote Conversion Demo')  # sets body
-    # with open('Attachment_dir\\test.pdf', 'rb') as f:  # adds attachment
-    #     file_data = f.read()
-    #     file_name = f.name
-    #     msg.add_attachment(file_data, maintype='application', subtype='pdf', filename=file_name)
+
+    path_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'  # used pdfkit library to generate a pdf
+    config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
+    string_quote_data = str(quote_object)
+    pdfkit.from_string(string_quote_data, 'out.pdf', configuration=config)
+
+    with open('out.pdf', 'rb') as f:  # adds attachment
+        file_data = f.read()
+        file_name = f.name
+        msg.add_attachment(file_data, maintype='application', subtype='pdf', filename=file_name)
+
     with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
         smtp.ehlo()  # identifies ourselves w/ mail server
         smtp.starttls()  # encrypts traffic
         smtp.ehlo()
         smtp.login(user, password)
         smtp.send_message(msg)
+    os.remove('out.pdf')
 
 
 def auth(user, password, imap_url):
