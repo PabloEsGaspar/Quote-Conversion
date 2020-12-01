@@ -191,7 +191,7 @@ if __name__ == "__main__":  # MAIN METHOD
                 quote_obj = generate_quote_object(html_file_path)  # use html to create quote object
 
                 send_email(return_email_address, quote_obj)  # send response email
-
+                os.remove(html_file_path)  # delete html file from attachment_dir now that it's no longer needed
             print(f"deleting email b'{i}'")
             con.store(b_string, '+FLAGS', r'(\Deleted)')  # delete email from inbox
 
