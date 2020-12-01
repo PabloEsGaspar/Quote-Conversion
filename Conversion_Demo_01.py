@@ -1,5 +1,7 @@
-import imaplib, email, os
-from Quote import Quote, Product
+import imaplib
+import email
+import os
+from Quote import Quote
 from bs4 import BeautifulSoup
 import codecs
 import smtplib
@@ -106,69 +108,16 @@ def email_has_attachment(msg):
 
 def generate_quote_object(file_path):
     """
-    Scrapes quote data from html file at given filepath, then instantiates a quote object with the data from the html
+    creates html parser 'soup' and a quote_object, then has the quote_object populate itself using 'soup'
     :param file_path:
     :return: Quote object
     """
     f = codecs.open(file_path, 'r')  # stores html in a string variable
     html_data = f.read()
     soup = BeautifulSoup(html_data, 'html.parser')  # scrape html for quote info and use it to make a quote object
-
-    quote_number = soup.find("div", class_='grey-bg').find('div', class_='col6 ccol6 orderform').find_next_sibling \
-        ('div', class_='col6 ccol6 orderform').find('div', class_='form-2col order-inputs').find('span').text.strip()
-    purchaser_info = soup.find(class_='combined-detail').text.strip()
-    purchaser_info = purchaser_info[:-1]  # removes last character of string which is a ',' in this case
-    purchaser_info_list = purchaser_info.split(', ')
-    purchaser_name = purchaser_info_list[0]
-    purchaser_email = purchaser_info_list[1]
-    purchaser_phone = purchaser_info_list[2]
-    created_by = soup.find("div", class_='grey-bg').find('div', class_='col6 ccol6 orderform') \
-        .find('div', class_='form-2col order-inputs created-by').find('span').text.strip()
-    date_created = soup.find("div", class_='grey-bg').find('div', class_='col6 ccol6 orderform').find_next_sibling \
-        ('div', class_='col6 ccol6 orderform').find('div', class_='form-2col order-inputs').find_next_sibling \
-        ('div', class_='form-2col order-inputs').find('span').text.strip()
-    expiration_date = soup.find("div", class_='grey-bg').find('div', class_='col6 ccol6 orderform').find_next_sibling \
-        ('div', class_='col6 ccol6 orderform').find('div', class_='form-2col order-inputs').find_next_sibling \
-        ('div', class_='form-2col order-inputs').find_next_sibling('div', class_='form-2col order-inputs') \
-        .find('span').text.strip()
-    subtotal = soup.find('div', id='total_breakdown').find('td', class_='total_figures').text.strip()
-    quote_total = soup.find("div", class_='grey-bg').find('div', class_='col6 ccol6 orderform') \
-        .find('div', class_='form-2col order-inputs').find_next_sibling('div', class_='form-2col order-inputs') \
-        .find('span').text.strip()
-    contract_name = soup.find('div', class_='contract').find('p', class_='company-view').text.strip()
-
-    try:
-        special_pricing_code = soup.find('div', id='total_breakdown').find('div', class_='left').find('div') \
-            .find_next_sibling('div').text.strip()
-    except AttributeError:
-        print('no special pricing code found in HTML')
-        special_pricing_code = None
-    # instantiate quote object
-    quote_object = Quote(quote_number, purchaser_name, purchaser_email, purchaser_phone, created_by, date_created,
-                         expiration_date, subtotal, quote_total, contract_name,
-                         generate_list_of_products(soup), special_pricing_code)
-
+    quote_object = Quote()
+    quote_object.populate(soup)
     return quote_object
-
-
-def generate_list_of_products(soup):
-    """
-    uses soup parser provided to scrape the html, then uses the data to create a list of Product objects
-    :param soup:
-    :return List[Products]:
-    """
-    product_descriptions = soup.find_all(class_='hp-product-description')  # scraping product info into resultSets
-    product_quantities_set = soup.find_all(class_='item-quantity')
-    price_each_set = soup.find_all(class_='price hp-price price-content')
-    price_total_set = soup.find_all("span", class_='price')
-    count = 0
-    my_products = []
-    for p in product_descriptions:  # loop through the resultSets to create a list of Products
-        my_products.append(Product(p.text.strip(), product_quantities_set[count].text.strip(),
-                                   price_each_set[count].text.strip().split('\n', 1)[0],
-                                   price_total_set[count].text.strip()))
-        count += 1
-    return my_products
 
 
 if __name__ == "__main__":  # MAIN METHOD
