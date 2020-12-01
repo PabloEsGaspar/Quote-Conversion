@@ -131,17 +131,22 @@ def generate_quote_object(file_path):
         ('div', class_='col6 ccol6 orderform').find('div', class_='form-2col order-inputs').find_next_sibling \
         ('div', class_='form-2col order-inputs').find_next_sibling('div', class_='form-2col order-inputs') \
         .find('span').text.strip()
-    special_pricing_code = soup.find('div', id='total_breakdown').find('div', class_='left').find('div') \
-        .find_next_sibling('div').text.strip()
     subtotal = soup.find('div', id='total_breakdown').find('td', class_='total_figures').text.strip()
     quote_total = soup.find("div", class_='grey-bg').find('div', class_='col6 ccol6 orderform') \
         .find('div', class_='form-2col order-inputs').find_next_sibling('div', class_='form-2col order-inputs') \
         .find('span').text.strip()
     contract_name = soup.find('div', class_='contract').find('p', class_='company-view').text.strip()
+
+    try:
+        special_pricing_code = soup.find('div', id='total_breakdown').find('div', class_='left').find('div') \
+            .find_next_sibling('div').text.strip()
+    except AttributeError:
+        print('no special pricing code found in HTML')
+        special_pricing_code = None
     # instantiate quote object
     quote_object = Quote(quote_number, purchaser_name, purchaser_email, purchaser_phone, created_by, date_created,
-                         expiration_date, special_pricing_code, subtotal, quote_total, contract_name,
-                         generate_list_of_products(soup))
+                         expiration_date, subtotal, quote_total, contract_name,
+                         generate_list_of_products(soup), special_pricing_code)
 
     return quote_object
 
