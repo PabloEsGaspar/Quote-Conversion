@@ -29,8 +29,8 @@ def send_email(receiver_email, quote_object):
     msg['To'] = receiver_email
 
     json_quote = json.dumps(quote_object.__dict__, default=lambda o: o.__dict__, indent=4)
-    msg.set_content(f'See JSON string of the quote data below: \n{json_quote}\n\n\nKodama Group\nQuote Conversion Demo')  # sets body
-
+    msg.set_content(f'See JSON string of the quote data below: \n{json_quote}\n\n\nKodama Group\nQuote Conversion Demo')
+    # ^sets the body of the email
     path_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'  # used pdfkit library to generate a pdf
     config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
     string_quote_data = str(quote_object)
@@ -47,7 +47,7 @@ def send_email(receiver_email, quote_object):
         smtp.ehlo()
         smtp.login(user, password)
         smtp.send_message(msg)
-    os.remove('out.pdf')
+    os.remove('out.pdf')  # deletes pdf file from project directory
 
 
 def auth(user, password, imap_url):
