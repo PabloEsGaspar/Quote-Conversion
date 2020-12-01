@@ -74,13 +74,10 @@ def get_attachments(msg):
     """
     for part in msg.walk():
         if part.get_content_maintype() == 'multipart':
-            # print('part.getcontentmaintyhpe = multipart')
             continue
         if part.get('Content-Disposition') is None:
-            # print('Content-Disposition is None')
             continue
         file_name = part.get_filename()
-
         if bool(file_name):
             file_path = os.path.join(attachment_dir, file_name)
             with open(file_path, 'wb') as f:
@@ -121,29 +118,24 @@ def generate_quote_object(file_path):
 
 
 if __name__ == "__main__":  # MAIN METHOD
-
     con = auth(user, password, imap_url)  # open connection with imap server
 
     while True:  # endless loop to keep checking inbox for new mail
         typ, data = con.select('INBOX')  # set mailbox to INBOX
         num_emails = int(data[0])  # get total number of emails in inbox
-
         for i in range(1, num_emails + 1):  # loop through emails in inbox
             b_string = bytes(str(i), encoding="ascii")  # creates str b'i' / b'1' = the oldest email in the mailbox
             print(f'Loop #{i}... b_string = {b_string}')
             result, data = con.fetch(b_string, '(RFC822)')  # fetch email data
             email_msg = email.message_from_bytes(data[0][1])  # decode email data
-
             if email_has_attachment(email_msg):  # check if email has an html attachment
                 html_file_path = get_attachments(email_msg)  # store html attachment in attachment_dir folder
                 return_email_address = email_msg.get('FROM')  # save the email's 'from' address tp variable
                 quote_obj = generate_quote_object(html_file_path)  # use html to create quote object
-
                 send_email(return_email_address, quote_obj)  # send response email
                 os.remove(html_file_path)  # delete html file from attachment_dir now that it's no longer needed
             print(f"deleting email b'{i}'")
             con.store(b_string, '+FLAGS', r'(\Deleted)')  # delete email from inbox
-
         print(f'sleeping for {sleep_time} seconds')
         time.sleep(sleep_time)  # wait 30 sec before beginning new iteration of while loop
 

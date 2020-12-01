@@ -15,6 +15,7 @@ class Product:
 class Quote:
 
     def __init__(self):
+        self.quote_name = ''
         self.quote_number = ''
         self.purchaser_name = ''
         self.purchaser_email = ''
@@ -63,6 +64,7 @@ class Quote:
             .find('span').text.strip()
 
     def populate_names(self, soup):
+        self.quote_name = soup.find('h1', class_='quote-header quote-bold-header').text.strip()
         self.created_by = soup.find("div", class_='grey-bg').find('div', class_='col6 ccol6 orderform') \
             .find('div', class_='form-2col order-inputs created-by').find('span').text.strip()
         self.contract_name = soup.find('div', class_='contract').find('p', class_='company-view').text.strip()
@@ -91,13 +93,8 @@ class Quote:
             special_pricing_code_string = ''
         else:
             special_pricing_code_string = f'Special Pricing Code: {self.special_pricing_code}'
-        return f'Quote Number: {self.quote_number}\nPurchaser Name: {self.purchaser_name}\nPurchaser Email: ' \
-            f'{self.purchaser_email}\nPurchaser Phone: {self.purchaser_phone}\nCreated By: {self.created_by}\nDate ' \
-            f'Created: {self.date_created}\nExpiration Date: {self.expiration_date}\nSubtotal: ' \
-            f'{self.subtotal}\nQuote Total: {self.quote_total}\nContract Name: {self.contract_name}\n' + \
+        return f'Quote Name: {self.quote_name}\nQuote Number: {self.quote_number}\nPurchaser Name: {self.purchaser_name}' \
+               f'\nPurchaser Email: {self.purchaser_email}\nPurchaser Phone: {self.purchaser_phone}\nCreated By: ' \
+               f'{self.created_by}\nDate Created: {self.date_created}\nExpiration Date: {self.expiration_date}\n' \
+               f'Subtotal: {self.subtotal}\nQuote Total: {self.quote_total}\nContract Name: {self.contract_name}\n' + \
                special_pricing_code_string + '\n\n' + product_string
-
-
-
-
-
