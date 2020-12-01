@@ -1,5 +1,3 @@
-from typing import List
-
 
 class Product:
 
@@ -17,7 +15,7 @@ class Product:
 class Quote:
 
     def __init__(self, quote_number, purchaser_name, purchaser_email, purchaser_phone, created_by, date_created,
-                 expiration_date, special_pricing_code, subtotal, quote_total, contract_name, list_of_products):
+                 expiration_date, subtotal, quote_total, contract_name, list_of_products, special_pricing_code):
         self.quote_number = quote_number
         self.purchaser_name = purchaser_name
         self.purchaser_email = purchaser_email
@@ -35,7 +33,6 @@ class Quote:
         product_string = ''
         for p in self.list_of_products:
             product_string += str(p) + '\n'
-
         return f'Quote Number: {self.quote_number}\nPurchaser Name: {self.purchaser_name}\nPurchaser Email: ' \
             f'{self.purchaser_email}\nPurchaser Phone: {self.purchaser_phone}\nCreated By: {self.created_by}\nDate ' \
             f'Created: {self.date_created}\nExpiration Date: {self.expiration_date}\nSpecial Pricing Code: ' \
