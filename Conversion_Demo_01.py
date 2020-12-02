@@ -111,7 +111,7 @@ def generate_quote_object(file_path):
     """
     f = codecs.open(file_path, 'r')  # stores html in a string variable
     html_data = f.read()
-    soup = BeautifulSoup(html_data, 'html.parser')  # scrape html for quote info and use it to make a quote object
+    soup = BeautifulSoup(html_data, 'html5lib')  # scrape html for quote info and use it to make a quote object
     quote_object = Quote()
     quote_object.populate(soup)
     return quote_object

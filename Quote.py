@@ -1,15 +1,55 @@
 
+
+class Component:
+
+    def __init__(self, name, sku, qty):
+        self.name = name
+        self.sku = sku
+        self.qty = qty
+
+
 class Product:
 
-    def __init__(self, product_description, qty='', price_each='', price_total=''):
-        self.product_description = product_description
-        self.qty = qty
-        self.price_each = price_each
-        self.price_total = price_total
+    def __init__(self):
+        self.product_description = ''
+        self.sku = ''
+        self.qty = ''
+        self.price_each = ''
+        self.price_total = ''
+        self.old_price_each = None
+        self.special_price_expiration = None
+
+    def populate(self, row):
+        self.product_description = row.find('p', class_='hp-product-description').text.strip()
+        self.sku = row.find('span', class_='sku-desc').text.strip().replace(' ', '').replace('\t', '').replace('\n\n', '\n')
+        self.qty = row.find('p', class_='item-quantity').text.strip()
+        discount = row.find('div', class_='price hp-price price-content').find('s')
+        if bool(discount):
+            price_info_list = row.find('div', class_='price hp-price price-content').text.strip().replace('\t', '').replace('\n\n', '\n').split('\n')
+            self.price_each = price_info_list[0]
+            self.old_price_each = price_info_list[1]
+            self.special_price_expiration = price_info_list[2]
+        else:
+            self.price_each = row.find(class_='price hp-price price-content').text.strip()
+        self.price_total = row.find('span', class_='price').text.strip()
 
     def __str__(self):
-        return f'Product Description: {self.product_description}\nQuantity: {self.qty}\nPrice Each: ' \
-            f'{self.price_each}\nPrice Total: {self.price_total}\n'
+        return f'Product Description: {self.product_description}\n{self.sku}\nQuantity: {self.qty}\nPrice Each: ' \
+            f'{self.price_each}\nOld Price Each: {self.old_price_each}\nPrice Each Expiration: ' \
+            f'{self.special_price_expiration}\nPrice Total: {self.price_total}\n'
+
+
+class ConfigurableProduct(Product):
+
+    def __init__(self):
+        super().__init__()
+        # self.reference_model = reference_model
+        # self.configuration_id = configuration_id
+        self.list_of_components = []
+
+    def populate(self, row):
+        super().populate(row)
+        print('populate components')
 
 
 class Quote:
@@ -17,8 +57,8 @@ class Quote:
     def __init__(self):
         self.quote_name = ''
         self.quote_number = ''
-        self.purchaser_name = ''
         self.purchaser_email = ''
+        self.purchaser_name = ''
         self.purchaser_phone = ''
         self.created_by = ''
         self.date_created = ''
@@ -38,13 +78,15 @@ class Quote:
         self.populate_list_of_products(soup)
 
     def populate_list_of_products(self, soup):
-        product_descriptions = soup.find_all(class_='hp-product-description')  # scraping product info into resultSets
-        product_quantities_set = soup.find_all(class_='item-quantity')
-        price_each_set = soup.find_all(class_='price hp-price price-content')
-        price_total_set = soup.find_all("span", class_='price')
-        for i in range(len(product_descriptions)):  # loop through the resultSets to create a list of Products
-            self.list_of_products.append(Product(product_descriptions[i].text.strip(), product_quantities_set[i].text.strip(),
-                            price_each_set[i].text.strip().split('\n', 1)[0], price_total_set[i].text.strip()))
+        product_rows= soup.find(id='order_details').tbody.findChildren('tr', attrs={'class': None}, recursive=False)
+        for row in product_rows:
+            configurable_tag = row.find('div', class_='kit-detail-component')
+            if bool(configurable_tag):
+                product_object = ConfigurableProduct()
+            else:
+                product_object = Product()
+            product_object.populate(row)
+            self.list_of_products.append(product_object)
 
     def populate_special_code(self, soup):
         try:
@@ -93,7 +135,7 @@ class Quote:
             special_pricing_code_string = ''
         else:
             special_pricing_code_string = f'Special Pricing Code: {self.special_pricing_code}'
-        return f'Quote Name: {self.quote_name}\nQuote Number: {self.quote_number}\nPurchaser Name: {self.purchaser_name}' \
+        return f'\nQuote Name: {self.quote_name}\nQuote Number: {self.quote_number}\nPurchaser Name: {self.purchaser_name}' \
                f'\nPurchaser Email: {self.purchaser_email}\nPurchaser Phone: {self.purchaser_phone}\nCreated By: ' \
                f'{self.created_by}\nDate Created: {self.date_created}\nExpiration Date: {self.expiration_date}\n' \
                f'Subtotal: {self.subtotal}\nQuote Total: {self.quote_total}\nContract Name: {self.contract_name}\n' + \
