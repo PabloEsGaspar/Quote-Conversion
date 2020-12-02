@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c206a421-4639-4060-a27c-b3dc2e332a6a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Product.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Quote.py" beforeDir="false" afterPath="$PROJECT_DIR$/Quote.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -16,8 +16,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Conversion_Demo_01.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="34" column="87" selection-start-line="34" selection-start-column="87" selection-end-line="34" selection-end-column="87" />
+            <state relative-caret-position="2295">
+              <caret line="139" column="90" lean-forward="true" selection-start-line="139" selection-start-column="90" selection-end-line="139" selection-end-column="90" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
                 <element signature="e#2248#2430#1" />
@@ -29,11 +29,20 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Quote.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="73">
-              <caret line="155" column="13" lean-forward="true" selection-start-line="155" selection-start-column="13" selection-end-line="155" selection-end-column="13" />
+            <state relative-caret-position="-794">
+              <caret line="3" column="12" lean-forward="true" selection-start-line="3" selection-start-column="12" selection-end-line="3" selection-end-column="12" />
               <folding>
                 <element signature="e#3570#3768#1" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Product.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="221">
+              <caret line="13" column="18" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
             </state>
           </provider>
         </entry>
@@ -81,8 +90,9 @@
         <option value="$PROJECT_DIR$/scrape_products_test.py" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/Quote.py" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
-        <option value="$PROJECT_DIR$/Conversion_Demo_01.py" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/Quote_Class.py" />
+        <option value="$PROJECT_DIR$/Conversion_Demo_01.py" />
+        <option value="$PROJECT_DIR$/Product.py" />
         <option value="$PROJECT_DIR$/Quote.py" />
       </list>
     </option>
@@ -97,7 +107,29 @@
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes />
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="Quote-Conversion" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Quote-Conversion" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Quote-Conversion" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
+            </path>
+            <path>
+              <item name="Quote-Conversion" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
+              <item name="Scratches" type="d62648e6:ScratchProjectViewPane$MyRootNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="Python" />
@@ -227,12 +259,12 @@
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.10695469" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.10651828" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.39253998" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.39253998" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3997833" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -246,12 +278,12 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
     <layout-to-restore>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.10695469" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.10651828" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32827735" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.39253998" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3997833" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -279,17 +311,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Conversion_Demo_01.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="34" column="87" selection-start-line="34" selection-start-column="87" selection-end-line="34" selection-end-column="87" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-            <element signature="e#2248#2430#1" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/Quote_Class.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="39">
@@ -301,10 +322,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Conversion_Demo_01.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2295">
+          <caret line="139" column="90" lean-forward="true" selection-start-line="139" selection-start-column="90" selection-end-line="139" selection-end-column="90" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+            <element signature="e#2248#2430#1" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Product.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="18" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Quote.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="73">
-          <caret line="155" column="13" lean-forward="true" selection-start-line="155" selection-start-column="13" selection-end-line="155" selection-end-column="13" />
+        <state relative-caret-position="-794">
+          <caret line="3" column="12" lean-forward="true" selection-start-line="3" selection-start-column="12" selection-end-line="3" selection-end-column="12" />
           <folding>
             <element signature="e#3570#3768#1" />
           </folding>

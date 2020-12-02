@@ -135,7 +135,7 @@ if __name__ == "__main__":  # MAIN METHOD
                 send_email(return_email_address, quote_obj)  # send response email
                 os.remove(html_file_path)  # delete html file from attachment_dir now that it's no longer needed
             print(f"deleting email b'{i}'")
-            con.store(b_string, '+FLAGS', r'(\Deleted)')  # delete email from inbox
+            # con.store(b_string, '+FLAGS', r'(\Deleted)')  # delete email from inbox
         print(f'sleeping for {sleep_time} seconds')
         time.sleep(sleep_time)  # wait 30 sec before beginning new iteration of while loop
 
