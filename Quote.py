@@ -1,11 +1,13 @@
 
-
 class Component:
 
     def __init__(self, name, sku, qty):
         self.name = name
         self.sku = sku
         self.qty = qty
+
+    def __str__(self):
+        return f'{self.name}\t{self.sku}\t{self.qty}'
 
 
 class Product:
@@ -24,7 +26,7 @@ class Product:
         self.sku = row.find('span', class_='sku-desc').text.strip().replace(' ', '').replace('\t', '').replace('\n\n', '\n')
         self.qty = row.find('p', class_='item-quantity').text.strip()
         discount = row.find('div', class_='price hp-price price-content').find('s')
-        if bool(discount):
+        if bool(discount):  # checks if the row has discounted price data to populate
             price_info_list = row.find('div', class_='price hp-price price-content').text.strip().replace('\t', '').replace('\n\n', '\n').split('\n')
             self.price_each = price_info_list[0]
             self.old_price_each = price_info_list[1]
@@ -49,8 +51,20 @@ class ConfigurableProduct(Product):
 
     def populate(self, row):
         super().populate(row)
-        print('populate components')
+        component_rows = row.tbody.findChildren('tr')
+        for r in component_rows:
+            name_sku_list = r.find('td', class_='component-name').text.strip().replace('\t', '').split('\n')
+            name = name_sku_list[0]
+            sku = name_sku_list[1]
+            qty = r.find('td', class_='quantity').text.strip()
+            component_obj = Component(name, sku, qty)
+            self.list_of_components.append(component_obj)
 
+    def __str__(self):
+        components_string = ''
+        for c in self.list_of_components:
+            components_string += str(c) + '\n'
+        return components_string
 
 class Quote:
 
@@ -70,6 +84,7 @@ class Quote:
         self.list_of_products = []
 
     def populate(self, soup):
+        """calls several methods to divide the work of scraping the html and populating the Quote attributes"""
         self.populate_numbers(soup)
         self.populate_purchaser_info(soup)
         self.populate_names(soup)
@@ -78,10 +93,16 @@ class Quote:
         self.populate_list_of_products(soup)
 
     def populate_list_of_products(self, soup):
-        product_rows= soup.find(id='order_details').tbody.findChildren('tr', attrs={'class': None}, recursive=False)
+        """
+        scrapes html data for a list of products, iteratively creates product objects,
+        and appends them to Quote's list_of_products
+        :param soup:
+        :return none:
+        """
+        product_rows = soup.find(id='order_details').tbody.findChildren('tr', attrs={'class': None}, recursive=False)
         for row in product_rows:
             configurable_tag = row.find('div', class_='kit-detail-component')
-            if bool(configurable_tag):
+            if bool(configurable_tag):  # check if data has sub components
                 product_object = ConfigurableProduct()
             else:
                 product_object = Product()
@@ -130,7 +151,6 @@ class Quote:
         product_string = ''
         for p in self.list_of_products:
             product_string += str(p) + '\n'
-
         if self.special_pricing_code is None:
             special_pricing_code_string = ''
         else:
