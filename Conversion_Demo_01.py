@@ -1,3 +1,6 @@
+# 12.27.20 - reorganized the classes and polymorphism so the objects map into the correct json format.
+# Template API endpoint still not working, but working on postman and other test program. IDK why...
+
 import imaplib
 import email
 import os
@@ -9,6 +12,8 @@ from email.message import EmailMessage
 import time
 import json
 import pdfkit
+import requests
+import re
 
 
 user = 'quote.conversion@gmail.com'
@@ -19,38 +24,37 @@ sleep_time = 30  # seconds between each iteration of the program/how frequently 
 
 
 def send_email(receiver_email, quote_object):
-    """
-    Creates an EmailMessage object and adds all quote data to the body. Uses an smtp mail server to send email
-    to given address.
-    :param receiver_email:
-    :param quote_object:
-    :return: None
-    """
-    msg = EmailMessage()
-    msg['Subject'] = 'Quote Conversion Response - Kodama Group'
-    msg['From'] = user
-    msg['To'] = receiver_email
 
-    json_quote = json.dumps(quote_object.__dict__, default=lambda o: o.__dict__, indent=4)
-    msg.set_content(f'See JSON string of the quote data below: \n{json_quote}\n\n\nKodama Group\nQuote Conversion Demo')
-    # ^sets the body of the email
-    path_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'  # used pdfkit library to generate a pdf
-    config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
-    string_quote_data = str(quote_object)
-    pdfkit.from_string(string_quote_data, 'out.pdf', configuration=config)
+    auth = {'Authorization': 'Bearer ctCMVLF6pNWrCxj9JZ3e7lEIUbCWAF6kPfyHqh0z', 'Content-Type': 'application/json'}
+    data = create_json_data(receiver_email, quote_object)
+    print(data)
+    # print(f'valid json data: {is_json_valid(data)}')
+    response = requests.post('https://docamatic.com/api/v1/template', headers=auth, json=data)
+    print(response.status_code)
+    print(response.headers)
+    print(response.text)
+    print(response.content)
+    print(f'Response: {response.json()}')
 
-    with open('out.pdf', 'rb') as f:  # adds attachment
-        file_data = f.read()
-        file_name = f.name
-        msg.add_attachment(file_data, maintype='application', subtype='pdf', filename=file_name)
 
-    with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
-        smtp.ehlo()  # identifies ourselves w/ mail server
-        smtp.starttls()  # encrypts traffic
-        smtp.ehlo()
-        smtp.login(user, password)
-        smtp.send_message(msg)
-    os.remove('out.pdf')  # deletes pdf file from project directory
+def create_json_data(receiver_email, quote_object):
+    receiver_email_substring = re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.[a-z]+", receiver_email)[0]
+    data_dict = {'template': 'quotation2', 'font': 'Calibri', 'font_size': 0.9, 'page_numbers': True, 'name': 'Quote 1594087'}
+    data_body = quote_object.__dict__
+    email_data = {'to': receiver_email_substring, 'subject': 'Quote Conversion Response - Do Not Reply'}
+    data_dict['data'] = data_body
+    data_dict['email'] = email_data
+    json_data = json.dumps(data_dict, default=lambda o: o.__dict__, indent=4)
+    data = json.loads(json_data)
+    return data
+
+
+def is_json_valid(json_data):
+    try:
+        json.loads(json_data)
+    except ValueError as err:
+        return False
+    return True
 
 
 def auth(user, password, imap_url):
@@ -130,7 +134,7 @@ if __name__ == "__main__":  # MAIN METHOD
             email_msg = email.message_from_bytes(data[0][1])  # decode email data
             if email_has_attachment(email_msg):  # check if email has an html attachment
                 html_file_path = get_attachments(email_msg)  # store html attachment in attachment_dir folder
-                return_email_address = email_msg.get('FROM')  # save the email's 'from' address tp variable
+                return_email_address = email_msg.get('FROM')  # save the email's 'from' address to variable
                 quote_obj = generate_quote_object(html_file_path)  # use html to create quote object
                 send_email(return_email_address, quote_obj)  # send response email
                 os.remove(html_file_path)  # delete html file from attachment_dir now that it's no longer needed
