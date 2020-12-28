@@ -1,5 +1,3 @@
-# 12.27.20 - reorganized the classes and polymorphism so the objects map into the correct json format.
-# Template API endpoint still not working, but working on postman and other test program. IDK why...
 
 import imaplib
 import email
