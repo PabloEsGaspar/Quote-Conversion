@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c206a421-4639-4060-a27c-b3dc2e332a6a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Conversion_Demo_01.py" beforeDir="false" afterPath="$PROJECT_DIR$/Conversion_Demo_01.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Product.py" beforeDir="false" afterPath="$PROJECT_DIR$/Product.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Quote.py" beforeDir="false" afterPath="$PROJECT_DIR$/Quote.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -18,11 +15,14 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Conversion_Demo_01.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="850">
-              <caret line="50" lean-forward="true" selection-start-line="50" selection-end-line="50" />
+            <state relative-caret-position="-487">
+              <caret line="60" column="4" selection-start-line="60" selection-start-column="4" selection-end-line="60" selection-end-column="4" />
               <folding>
                 <element signature="e#205#219#0" expanded="true" />
-                <element signature="e#4035#4297#0" />
+                <element signature="e#650#734#1" />
+                <element signature="e#1431#1515#1" />
+                <element signature="e#2213#2266#1" />
+                <element signature="e#1952#2110#1" />
                 <element signature="e#4330#4950#0" />
                 <element signature="e#4988#5439#0" />
                 <element signature="e#5484#5941#0" />
@@ -34,8 +34,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Quote.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="397">
-              <caret line="132" selection-start-line="132" selection-end-line="132" />
+            <state relative-caret-position="261">
+              <caret line="132" lean-forward="true" selection-start-line="3" selection-end-line="132" />
               <folding>
                 <element signature="e#1097#1382#0" />
                 <element signature="e#1421#2248#0" />
@@ -51,46 +51,30 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Product.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="33" column="28" lean-forward="true" selection-start-line="33" selection-start-column="28" selection-end-line="33" selection-end-column="28" />
+            <state relative-caret-position="261">
+              <caret line="127" lean-forward="true" selection-end-line="127" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/Quote_Class.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2873">
-              <caret line="171" selection-start-line="171" selection-end-line="171" />
+            <state>
+              <caret lean-forward="true" />
               <folding>
-                <element signature="e#0#29#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/dict to json test.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="159">
-              <caret line="66" column="77" lean-forward="true" selection-start-line="66" selection-start-column="49" selection-end-line="66" selection-end-column="77" />
-              <folding>
-                <element signature="e#0#11#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/ApiData.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="14" selection-start-line="14" selection-end-line="14" />
-              <folding>
-                <element signature="e#0#23#0" expanded="true" />
+                <element signature="e#1027#1312#0" />
+                <element signature="e#1351#2178#0" />
+                <element signature="e#2973#3788#0" />
+                <element signature="e#3845#5000#0" />
+                <element signature="e#5053#5367#0" />
+                <element signature="e#5413#6121#0" />
+                <element signature="e#6167#6254#0" />
+                <element signature="e#6302#6906#0" />
+                <element signature="e#6939#7614#0" />
               </folding>
             </state>
           </provider>
@@ -117,10 +101,10 @@
         <option value="$APPLICATION_CONFIG_DIR$/scratches/dict to json test" />
         <option value="$PROJECT_DIR$/Product.py" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/dict to json test.py" />
-        <option value="$APPLICATION_CONFIG_DIR$/scratches/Quote_Class.py" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/ApiData.py" />
-        <option value="$PROJECT_DIR$/Conversion_Demo_01.py" />
         <option value="$PROJECT_DIR$/Quote.py" />
+        <option value="$PROJECT_DIR$/Conversion_Demo_01.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/Quote_Class.py" />
       </list>
     </option>
   </component>
@@ -308,12 +292,12 @@
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.10572337" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.10572337" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32936078" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.39076376" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.39076376" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3997833" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -361,16 +345,6 @@
       </provider>
     </entry>
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/dict to json test" />
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/Quote_Class.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2873">
-          <caret line="171" selection-start-line="171" selection-end-line="171" />
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/ApiData.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
@@ -381,23 +355,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/dict to json test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="159">
-          <caret line="66" column="77" lean-forward="true" selection-start-line="66" selection-start-column="49" selection-end-line="66" selection-end-column="77" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Conversion_Demo_01.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="850">
-          <caret line="50" lean-forward="true" selection-start-line="50" selection-end-line="50" />
+        <state relative-caret-position="-487">
+          <caret line="60" column="4" selection-start-line="60" selection-start-column="4" selection-end-line="60" selection-end-column="4" />
           <folding>
             <element signature="e#205#219#0" expanded="true" />
-            <element signature="e#4035#4297#0" />
+            <element signature="e#650#734#1" />
+            <element signature="e#1431#1515#1" />
+            <element signature="e#2213#2266#1" />
+            <element signature="e#1952#2110#1" />
             <element signature="e#4330#4950#0" />
             <element signature="e#4988#5439#0" />
             <element signature="e#5484#5941#0" />
@@ -405,10 +372,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/dict to json test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="159">
+          <caret line="66" column="88" lean-forward="true" selection-start-line="66" selection-start-column="88" selection-end-line="66" selection-end-column="88" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Quote.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="397">
-          <caret line="132" selection-start-line="132" selection-end-line="132" />
+        <state relative-caret-position="261">
+          <caret line="132" lean-forward="true" selection-start-line="3" selection-end-line="132" />
           <folding>
             <element signature="e#1097#1382#0" />
             <element signature="e#1421#2248#0" />
@@ -425,8 +402,26 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Product.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="33" column="28" lean-forward="true" selection-start-line="33" selection-start-column="28" selection-end-line="33" selection-end-column="28" />
+        <state relative-caret-position="261">
+          <caret line="127" lean-forward="true" selection-end-line="127" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/Quote_Class.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret lean-forward="true" />
+          <folding>
+            <element signature="e#1027#1312#0" />
+            <element signature="e#1351#2178#0" />
+            <element signature="e#2973#3788#0" />
+            <element signature="e#3845#5000#0" />
+            <element signature="e#5053#5367#0" />
+            <element signature="e#5413#6121#0" />
+            <element signature="e#6167#6254#0" />
+            <element signature="e#6302#6906#0" />
+            <element signature="e#6939#7614#0" />
+          </folding>
         </state>
       </provider>
     </entry>

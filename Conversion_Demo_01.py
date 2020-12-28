@@ -7,11 +7,8 @@ import os
 from Quote import Quote
 from bs4 import BeautifulSoup
 import codecs
-import smtplib
-from email.message import EmailMessage
 import time
 import json
-import pdfkit
 import requests
 import re
 
@@ -24,22 +21,33 @@ sleep_time = 30  # seconds between each iteration of the program/how frequently 
 
 
 def send_email(receiver_email, quote_object):
-
+    """
+    organizes quote data into a docamatic post request to send pdf to email provided
+    :param receiver_email:
+    :param quote_object:
+    :return None:
+    """
     auth = {'Authorization': 'Bearer ctCMVLF6pNWrCxj9JZ3e7lEIUbCWAF6kPfyHqh0z', 'Content-Type': 'application/json'}
     data = create_json_data(receiver_email, quote_object)
-    print(data)
-    # print(f'valid json data: {is_json_valid(data)}')
+    # print(f'valid json data: {is_json_valid(data)}')  # data param can't be a json string, must be dict, list, etc..
     response = requests.post('https://docamatic.com/api/v1/template', headers=auth, json=data)
-    print(response.status_code)
-    print(response.headers)
-    print(response.text)
-    print(response.content)
+    # print(response.status_code)
+    # print(response.headers)
+    # print(response.text)
+    # print(response.content)
     print(f'Response: {response.json()}')
 
 
 def create_json_data(receiver_email, quote_object):
+    """
+    combines data into one big dictionary that is easily jsonifiable
+    :param receiver_email:
+    :param quote_object:
+    :return data{}:
+    """
     receiver_email_substring = re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.[a-z]+", receiver_email)[0]
-    data_dict = {'template': 'quotation2', 'font': 'Calibri', 'font_size': 0.9, 'page_numbers': True, 'name': 'Quote 1594087'}
+    data_dict = {'template': 'quotation2', 'font': 'Calibri', 'font_size': 0.9, 'page_numbers': True,
+                 'name': 'Quote 1594087'}
     data_body = quote_object.__dict__
     email_data = {'to': receiver_email_substring, 'subject': 'Quote Conversion Response - Do Not Reply'}
     data_dict['data'] = data_body
@@ -50,6 +58,11 @@ def create_json_data(receiver_email, quote_object):
 
 
 def is_json_valid(json_data):
+    """
+    return true if input is a valid json object and false otherwise
+    :param json_data:
+    :return boolean:
+    """
     try:
         json.loads(json_data)
     except ValueError as err:
