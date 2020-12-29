@@ -14,7 +14,7 @@ import re
 user = 'quote.conversion@gmail.com'
 password = '@kodama14'
 imap_url = 'imap.gmail.com'
-attachment_dir = 'attachment_dir'
+attachment_dir = '.'
 sleep_time = 30  # seconds between each iteration of the program/how frequently the program checks for new emails
 
 
@@ -29,10 +29,10 @@ def send_email(receiver_email, quote_object):
     data = create_json_data(receiver_email, quote_object)
     # print(f'valid json data: {is_json_valid(data)}')  # data param can't be a json string, must be dict, list, etc..
     response = requests.post('https://docamatic.com/api/v1/template', headers=auth, json=data)
-    # print(response.status_code)
-    # print(response.headers)
-    # print(response.text)
-    # print(response.content)
+    print(response.status_code)
+    print(response.headers)
+    print(response.text)
+    print(response.content)
     print(f'Response: {response.json()}')
 
 
