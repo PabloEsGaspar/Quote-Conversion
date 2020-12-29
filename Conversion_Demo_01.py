@@ -14,8 +14,8 @@ import re
 user = 'quote.conversion@gmail.com'
 password = '@kodama14'
 imap_url = 'imap.gmail.com'
-attachment_dir = '.'
-sleep_time = 30  # seconds between each iteration of the program/how frequently the program checks for new emails
+root_dir = '.'  # root dir path - where attachments are imported, scraped for data, and deleted
+sleep_time = 60  # seconds between each iteration of the program/how often to check inbox for new mail
 
 
 def send_email(receiver_email, quote_object):
@@ -30,10 +30,6 @@ def send_email(receiver_email, quote_object):
     # print(f'valid json data: {is_json_valid(data)}')  # data param can't be a json string, must be dict, list, etc..
     response = requests.post('https://docamatic.com/api/v1/template', headers=auth, json=data)
     print(response.status_code)
-    print(response.headers)
-    print(response.text)
-    print(response.content)
-    print(f'Response: {response.json()}')
 
 
 def create_json_data(receiver_email, quote_object):
@@ -94,7 +90,7 @@ def get_attachments(msg):
             continue
         file_name = part.get_filename()
         if bool(file_name):
-            file_path = os.path.join(attachment_dir, file_name)
+            file_path = os.path.join(root_dir, file_name)
             with open(file_path, 'wb') as f:
                 f.write(part.get_payload(decode=True))
             return file_path
