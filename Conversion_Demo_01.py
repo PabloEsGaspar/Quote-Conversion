@@ -41,8 +41,9 @@ def create_json_data(receiver_email, quote_object):
     :return data{}:
     """
     receiver_email_substring = re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.[a-z]+", receiver_email)[0]
+    quote_name_str = f'Quote {quote_object.quote_number}'
     data_dict = {'template': 'quotation2', 'font': 'Calibri', 'font_size': 0.9, 'page_numbers': True,
-                 'name': 'Quote 1594087'}
+                 'name': quote_name_str}
     data_body = quote_object.__dict__
     email_data = {'to': receiver_email_substring, 'subject': 'Quote Conversion Response - Do Not Reply'}
     data_dict['data'] = data_body
