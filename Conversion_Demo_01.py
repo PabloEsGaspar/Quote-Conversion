@@ -27,7 +27,7 @@ def send_email(receiver_email, quote_object):
     """
     auth = {'Authorization': 'Bearer ctCMVLF6pNWrCxj9JZ3e7lEIUbCWAF6kPfyHqh0z', 'Content-Type': 'application/json'}
     data = create_json_data(receiver_email, quote_object)
-    print(json.dumps(data, indent=4))
+    # print(json.dumps(data, indent=4))
     # print(f'valid json data: {is_json_valid(data)}')  # data param can't be a json string, must be dict, list, etc..
     response = requests.post('https://docamatic.com/api/v1/template', headers=auth, json=data)
     print(response.status_code)
@@ -147,7 +147,7 @@ if __name__ == "__main__":  # MAIN METHOD
                 send_email(return_email_address, quote_obj)  # send response email
                 os.remove(html_file_path)  # delete html file from attachment_dir now that it's no longer needed
             # print(f"deleting email b'{i}'")
-            # con.store(b_string, '+FLAGS', r'(\Deleted)')  # delete email from inbox
+            con.store(b_string, '+FLAGS', r'(\Deleted)')  # delete email from inbox
         print(f'sleeping for {sleep_time} seconds')
         time.sleep(sleep_time)  # wait x sec before beginning new iteration of while loop
 
