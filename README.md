@@ -18,7 +18,7 @@ Contact developer if you have any questions/issues, or to add additional functio
 Language: Python 3.7.9<br />
 Deployment Environment: Heroku - Cloud Platform as a Service <br />
 Docamatic API: Creates PDF quote from custom template and provided json data - endpoint: https://docamatic.com/api/v1/template 
-#### Projects Files:
+#### Project Files:
 File  | Contents 
 :------------ | :------------
 Quote.py | Classes/sub-classes that represent quotes, classes contain 'populate()' methods to scrape HTML and self populate attributes
