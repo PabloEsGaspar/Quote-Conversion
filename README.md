@@ -6,24 +6,20 @@
 Program receives email with HTML attachment, extracts relevant data from HTML, uses data to create a PDF quote, and returns an email with the PDF quote as an attachment. 
 
 ## User Instructions
-Email HTML file to <quote.conversion@gmail.com>. Emails limited to **ONE ATTACHMENT PER EMAIL**. Additional attachments from the same email will be ignored. Expect to receive response email between 30 seconds and 3 minutes after intital email is sent. 
+Email HTML file to <quote.conversion@gmail.com>. Emails limited to **ONE ATTACHMENT PER EMAIL**. Additional attachments from the same email will be ignored. Expect to receive response between 30 seconds and 3 minutes after intital email is sent. 
 
 ## Project Skeleton 
 Language: Python 3.7.9<br />
 Deployment Environment: Heroku - Cloud Platform as a Service <br />
-API: Creates PDF quote from custom template and json data - API endpoint: https://docamatic.com/api/v1/template 
-
-## Project Files
+Docamatic API: Creates PDF quote from custom template and provided json data - endpoint: https://docamatic.com/api/v1/template 
 File  | Contents 
 :------------ | :------------
-Quote.py | Classes/sub-classes that represent quotes, classes contain 'populate()' methods to scrape HTML and self populate class attributes
+Quote.py | Classes/sub-classes that represent quotes, classes contain 'populate()' methods to scrape HTML and self populate attributes
 Product.py | Classes/sub-classes that represent products, components, etc.. also contain methods to self-populate attributes
 Conversion_Demo_01.py | Main method that iteratively checks inbox for new emails, and calls top level functions to carry out the quote conversion process
 Procfile | Command to be executed upon startup (necessary for deployment) 
-requirements.txt | Specify dependencies required (necessary for deployment)
-runtime.txt | Specifies which version of Python to use (necessary for deployment)
-
-## Project Packages
+requirements.txt | Specifies dependencies (necessary for deployment)
+runtime.txt | Specifies version of Python is used (necessary for deployment)
 Package  | Functionality
 :------------ | :------------
 requests  | Execute API POST requests to create PDF quote & email as attachment 
