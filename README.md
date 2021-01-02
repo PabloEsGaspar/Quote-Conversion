@@ -9,7 +9,7 @@ Program receives email with HTML attachment, extracts relevant data from HTML, u
 Email HTML file to <quote.conversion@gmail.com>. Emails limited to **ONE ATTACHMENT PER EMAIL**. Additional attachments from the same email will be ignored. Expect to receive response within one minute after intital email is sent. 
 
 ## Known Bugs
-Emails to <quote.conversion@gmail.com> might get marked as spam, in which case they will not be seen by the program. To avoid being marked as spam send Gaspar a list of sender email addresses. Filters will be added so that emails received from those addresses will be kept out of the spam folder.  
+Emails to <quote.conversion@gmail.com> might get marked as spam, in which case they will not be seen by the program. To avoid being marked as spam provide developer with a list of sender email addresses. Filters will be updated so that emails received from those addresses will be kept out of the spam folder.  
 
 ## Support
 Contact developer if you have any questions/issues, or would like to add additional functionality <br />Developer: Gaspar Tonnesen - gaspartonnesen@gmail.com - 480-751-7157
