@@ -133,7 +133,7 @@ if __name__ == "__main__":  # MAIN METHOD
     con = auth(user, password, imap_url)  # open connection with imap server
 
     while True:  # endless loop to keep checking inbox for new mail
-        print('Done sleeping...proceeding to check inbox for new emails')
+        print('Proceeding to check inbox for new emails')
         typ, data = con.select('INBOX')  # set mailbox to INBOX
         num_emails = int(data[0])  # get total number of emails in inbox
         if num_emails == 0:
