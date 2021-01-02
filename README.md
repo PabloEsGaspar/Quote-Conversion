@@ -20,6 +20,7 @@ Conversion_Demo_01.py | Main method that iteratively checks inbox for new emails
 Procfile | Command to be executed upon startup (necessary for deployment) 
 requirements.txt | Specifies dependencies (necessary for deployment)
 runtime.txt | Specifies version of Python is used (necessary for deployment)
+
 Package  | Functionality
 :------------ | :------------
 requests  | Execute API POST requests to create PDF quote & email as attachment 
