@@ -9,8 +9,7 @@ import time
 import json
 import requests
 import re
-
-
+# global varibales
 user = 'quote.conversion@gmail.com'
 password = '@kodama14'
 imap_url = 'imap.gmail.com'
@@ -155,3 +154,4 @@ if __name__ == "__main__":  # MAIN METHOD
         print(f'sleeping for {sleep_time} seconds')
         time.sleep(sleep_time)  # wait x sec before beginning new iteration of while loop
 
+# git push heroku main - to push to remote
