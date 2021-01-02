@@ -1,5 +1,5 @@
-# Quote-Conversion
-## EMAIL BASED HTML TO PDF QUOTE CONVERSION TOOL
+# QUOTE CONVERSION TOOL
+## Email Based HTML to PDF Quote Conversion
 Kodama Group proprietary information. 
 
 ## Description
