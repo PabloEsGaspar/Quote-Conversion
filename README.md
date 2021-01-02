@@ -1,6 +1,6 @@
 # QUOTE CONVERSION TOOL
-## Email Based HTML to PDF Quote Conversion
-Kodama Group proprietary information. 
+**Email Based HTML to PDF Quote Conversion**<br />
+*Kodama Group proprietary information* 
 
 ## Description
 Program receives email with HTML attachment, extracts relevant data from HTML, uses data to create a PDF quote, and returns an email with the PDF quote as an attachment. 
