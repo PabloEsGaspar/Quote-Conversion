@@ -29,5 +29,8 @@ File  | Contents
 :------------ | :------------
 Quote.py | Classes/sub-classes that represent quotes, classes contain 'populate()' methods to scrape HTML and self populate class attributes
 Product.py | Classes/sub-classes that represent products, components, etc.. also contain methods to self-populate attributes
-Conversion_Demo_01.py | Main method that iteratively checks inbox for new emails, and calls top level functions to carry out the quote conversion process  
+Conversion_Demo_01.py | Main method that iteratively checks inbox for new emails, and calls top level functions to carry out the quote conversion process
+Procfile | Command to be executed upon startup (necessary for deployment) 
+requirements.txt | Specify dependencies required (necessary for deployment)
+runtime.txt | Specifies which version of Python to use (necessary for deployment)
 
