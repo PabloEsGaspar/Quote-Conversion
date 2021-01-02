@@ -6,7 +6,7 @@
 Program receives email with HTML attachment, extracts relevant data from HTML, uses data to create a PDF quote, and returns an email with the PDF quote as an attachment. 
 
 ## User Instructions
-Email HTML files to <quote.conversion@gmail.com>. Emails limited to **ONE ATTACHMENT PER EMAIL**. Additional attachments from the same email will be ignored. Expect to receive response email between 30 seconds and 3 minutes after intital email is sent. 
+Email HTML file to <quote.conversion@gmail.com>. Emails limited to **ONE ATTACHMENT PER EMAIL**. Additional attachments from the same email will be ignored. Expect to receive response email between 30 seconds and 3 minutes after intital email is sent. 
 
 ## Project Skeleton 
 Language: Python 3.7.9<br />
