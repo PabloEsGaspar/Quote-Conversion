@@ -134,11 +134,14 @@ if __name__ == "__main__":  # MAIN METHOD
     con = auth(user, password, imap_url)  # open connection with imap server
 
     while True:  # endless loop to keep checking inbox for new mail
+        print('Done sleeping...proceeding to check inbox for new emails')
         typ, data = con.select('INBOX')  # set mailbox to INBOX
         num_emails = int(data[0])  # get total number of emails in inbox
+        if num_emails == 0:
+            print('Inbox was empty')
         for i in range(1, num_emails + 1):  # loop through emails in inbox
             b_string = bytes(str(i), encoding="ascii")  # creates str b'i' / b'1' = the oldest email in the mailbox
-            print(f'Loop #{i}... b_string = {b_string}')
+            print(f'Processing email #{i} from inbox')
             result, data = con.fetch(b_string, '(RFC822)')  # fetch email data
             email_msg = email.message_from_bytes(data[0][1])  # decode email data
             if email_has_attachment(email_msg):  # check if email has an html attachment
@@ -147,7 +150,7 @@ if __name__ == "__main__":  # MAIN METHOD
                 quote_obj = generate_quote_object(html_file_path)  # use html to create quote object
                 send_email(return_email_address, quote_obj)  # send response email
                 os.remove(html_file_path)  # delete html file from attachment_dir now that it's no longer needed
-            # print(f"deleting email b'{i}'")
+            print(f"deleting email #{i} from inbox")
             con.store(b_string, '+FLAGS', r'(\Deleted)')  # delete email from inbox
         print(f'sleeping for {sleep_time} seconds')
         time.sleep(sleep_time)  # wait x sec before beginning new iteration of while loop
