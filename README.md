@@ -14,15 +14,10 @@ Emails to <quote.conversion@gmail.com> might get marked as spam, in which case t
 ## Support
 Contact developer to fix bugs, answer questions, add functionality, etc.. <br />Developer: Gaspar Tonnesen - gaspartonnesen@gmail.com - 480-751-7157
 
-## Code Contents
+## Project Skeleton 
 Language: Python 3.7.9<br />
 Deployment Environment: Heroku - Cloud Platform as a Service <br />
 API: Creates PDF quote from custom template and json data - API endpoint: https://docamatic.com/api/v1/template 
-Package  | Functionality
-:------------ | :------------
-requests  | Execute API POST requests to create PDF quote & email as attachment 
-imaplib  | Connect to gmail account and access inbox   
-BeautifulSoup | Works with HTML parser to search/navigate HTML and extract data  
 
 ## Project Files
 File  | Contents 
@@ -34,3 +29,9 @@ Procfile | Command to be executed upon startup (necessary for deployment)
 requirements.txt | Specify dependencies required (necessary for deployment)
 runtime.txt | Specifies which version of Python to use (necessary for deployment)
 
+## Project Packages
+Package  | Functionality
+:------------ | :------------
+requests  | Execute API POST requests to create PDF quote & email as attachment 
+imaplib  | Connect to gmail account and access inbox   
+BeautifulSoup | Works with HTML parser to search/navigate HTML and extract data  
