@@ -12,7 +12,7 @@ Email HTML file to <quote.conversion@gmail.com>. Emails limited to **ONE ATTACHM
 Emails to <quote.conversion@gmail.com> might get marked as spam, in which case they will not be seen by the program. To avoid being marked as spam provide developer with a list of sender email addresses. Filters will be updated so that emails received from those addresses will be kept out of the spam folder.  
 
 ## Support
-Contact developer if you have any questions/issues, or to add additional functionality <br />Developer: Gaspar Tonnesen - gaspartonnesen@gmail.com - 480-751-7157
+Contact developer if you have any questions/issues, or to add additional functionality. <br />Developer: Gaspar Tonnesen - gaspartonnesen@gmail.com - 480-751-7157
 
 ## Project Skeleton 
 Language: Python 3.7.9<br />
