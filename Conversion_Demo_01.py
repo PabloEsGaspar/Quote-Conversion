@@ -15,7 +15,7 @@ user = 'quote.conversion@gmail.com'
 password = '@kodama14'
 imap_url = 'imap.gmail.com'
 root_dir = '.'  # root dir path - where attachments are imported, scraped for data, and deleted
-sleep_time = 60  # seconds between each iteration of the program/how often to check inbox for new mail
+sleep_time = 30  # seconds between each iteration of the program/how often to check inbox for new mail
 
 
 def send_email(receiver_email, quote_object):
@@ -25,11 +25,11 @@ def send_email(receiver_email, quote_object):
     :param quote_object:
     :return None:
     """
-    auth = {'Authorization': 'Bearer ctCMVLF6pNWrCxj9JZ3e7lEIUbCWAF6kPfyHqh0z', 'Content-Type': 'application/json'}
-    data = create_json_data(receiver_email, quote_object)
+    headers_dict = {'Authorization': 'Bearer ctCMVLF6pNWrCxj9JZ3e7lEIUbCWAF6kPfyHqh0z', 'Content-Type': 'application/json'}
+    json_body = create_json_data(receiver_email, quote_object)
     # print(json.dumps(data, indent=4))
     # print(f'valid json data: {is_json_valid(data)}')  # data param can't be a json string, must be dict, list, etc..
-    response = requests.post('https://docamatic.com/api/v1/template', headers=auth, json=data)
+    response = requests.post('https://docamatic.com/api/v1/template', headers=headers_dict, json=json_body)
     print(response.status_code)
 
 
