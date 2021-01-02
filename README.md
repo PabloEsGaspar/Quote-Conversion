@@ -1,4 +1,4 @@
-# AUTOMATED QUOTE CONVERSION
+# QUOTE CONVERSION TOOL
 **Email Based HTML to PDF Quote Conversion**<br />
 *Kodama Group proprietary information* 
 
