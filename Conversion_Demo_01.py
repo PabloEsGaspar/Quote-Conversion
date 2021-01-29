@@ -154,4 +154,6 @@ if __name__ == "__main__":  # MAIN METHOD
         print(f'sleeping for {sleep_time} seconds')
         time.sleep(sleep_time)  # wait x sec before beginning new iteration of while loop
 
-# git push heroku main - to push to remote
+# git push heroku main   push to remote
+# heroku                 display list of commands
+# heroku logs --tail     live feed of console while program runs
