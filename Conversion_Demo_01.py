@@ -9,7 +9,9 @@ import time
 import json
 import requests
 import re
-# global varibales
+import smtplib
+from email.message import EmailMessage
+# global variables
 user = 'quote.conversion@gmail.com'
 # password = '@kodama14'
 password = 'qdyjwhkgsukfbwux'  # Gmail app password increases security, makes IMAP connection more reliable
@@ -130,33 +132,90 @@ def generate_quote_object(file_path):
     return quote_object
 
 
-if __name__ == "__main__":  # MAIN METHOD
-    while True:  # endless loop to keep checking inbox for new mail
-        con = auth(user, password, imap_url)  # open connection with imap server
-        print('IMAP connection made')
+def send_connection_failure_email():
+    msg = EmailMessage()
+    msg['Subject'] = 'WARNING - Quote Conversion Failure'
+    msg['From'] = user
+    # msg['To'] = 'josh@kodamagroup.com'
+    msg['To'] = 'gtonnesen14@gmail.com'
+    msg['Cc'] = 'gaspartonnesen@gmail.com'
+    msg.set_content(
+        "WARNING\n\nQUOTE CONVERSION APP HAS SHUT DOWN DUE TO REPEATED FAILURES TO CONNECT TO GMAIL'S IMAP SERVER."
+        "\n\nPLEASE SERVICE ASAP.")  # sets body
+    with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
+        smtp.ehlo()  # identifies ourselves w/ mail server
+        smtp.starttls()  # encrypts traffic
+        smtp.ehlo()
+        smtp.login(user, password)
+        smtp.send_message(msg)
 
-        typ, data = con.select('INBOX')  # set mailbox to INBOX
-        num_emails = int(data[0])  # get total number of emails in inbox
-        if num_emails == 0:
-            print('Inbox was empty')
-        for i in range(1, num_emails + 1):  # loop through emails in inbox
-            b_string = bytes(str(i), encoding="ascii")  # creates str b'i' / b'1' = the oldest email in the mailbox
-            print(f'Processing email #{i} from inbox')
-            result, data = con.fetch(b_string, '(RFC822)')  # fetch email data
-            email_msg = email.message_from_bytes(data[0][1])  # decode email data
-            if email_has_attachment(email_msg):  # check if email has an html attachment
-                html_file_path = get_attachments(email_msg)  # store html attachment in attachment_dir folder
-                return_email_address = email_msg.get('FROM')  # save the email's 'from' address to variable
-                quote_obj = generate_quote_object(html_file_path)  # use html to create quote object
-                send_email(return_email_address, quote_obj)  # send response email
-                os.remove(html_file_path)  # delete html file from attachment_dir now that it's no longer needed
-            else:
-                print('Email had no attachment')
-            print(f"deleting email #{i} from inbox")
-            con.store(b_string, '+FLAGS', r'(\Deleted)')  # delete email from inbox
-        print(f'closing IMAP connection and sleeping for {sleep_time} seconds')
-        con.logout()
-        time.sleep(sleep_time)
+
+def send_conversion_failure_email(html_file_path):
+    msg = EmailMessage()
+    msg['Subject'] = 'WARNING - Quote Conversion Failure'
+    msg['From'] = user
+    # msg['To'] = 'josh@kodamagroup.com'
+    msg['To'] = 'gtonnesen14@gmail.com'
+    msg['Cc'] = 'gaspartonnesen@gmail.com'
+    msg.set_content('WARNING\n\nQuote conversion app failed to convert the attached html file.\n\nApp is still '
+                    'operational, but development is required before this file can be processed.')
+
+    with open(html_file_path, 'rb') as f:
+        file_data = f.read()
+        file_name = f.name
+        msg.add_attachment(file_data, maintype='application', subtype='html', filename=file_name)
+    with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
+        smtp.ehlo()  # identifies ourselves w/ mail server
+        smtp.starttls()  # encrypts traffic
+        smtp.ehlo()
+        smtp.login(user, password)
+        smtp.send_message(msg)
+
+
+if __name__ == "__main__":  # MAIN METHOD
+    connection_failure_count = 0
+    while True:  # endless loop to keep checking inbox for new mail
+        try:
+            con = auth(user, password, imap_url)  # open connection with imap server
+        except:
+            print('IMAP CONNECTION FAILED\nsending email notification of failure')
+            connection_failure_count += 1
+            if connection_failure_count >= 3:
+                send_connection_failure_email()
+                break
+        else:
+            connection_failure_count = 0
+            print('IMAP connection made')
+            typ, data = con.select('INBOX')  # set mailbox to INBOX
+            num_emails = int(data[0])  # get total number of emails in inbox
+            if num_emails == 0:
+                print('Inbox was empty')
+            for i in range(1, num_emails + 1):  # loop through emails in inbox
+                b_string = bytes(str(i), encoding="ascii")  # creates str b'i' / b'1' = the oldest email in the mailbox
+                print(f'Processing email #{i} from inbox')
+                result, data = con.fetch(b_string, '(RFC822)')  # fetch email data
+                email_msg = email.message_from_bytes(data[0][1])  # decode email data
+                if email_has_attachment(email_msg):  # check if email has an html attachment
+                    html_file_path = get_attachments(email_msg)  # store html attachment in attachment_dir folder
+                    return_email_address = email_msg.get('FROM')  # save the email's 'from' address to variable
+                    try:
+                        quote_obj = generate_quote_object(html_file_path)  # use html to create quote object
+                    except:
+                        print('FAILED TO CONVERT HTML FILE\nsending email notification of failure')
+                        send_conversion_failure_email(html_file_path)
+                    else:
+                        send_email(return_email_address, quote_obj)  # send response email
+                    os.remove(html_file_path)  # delete html file from attachment_dir now that it's no longer needed
+                else:
+                    print('Email had no attachment')
+                print(f"deleting email #{i} from inbox")
+                con.store(b_string, '+FLAGS', r'(\Deleted)')  # delete email from inbox
+
+            print(f'closing IMAP connection\nsleeping for {sleep_time} seconds')
+            con.logout()
+            time.sleep(sleep_time)
+
+    print('APPLICATION TERMINATING DUE TO REPEATED FAILURE...')
 
 
 # git push heroku main   push to remote
