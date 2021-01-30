@@ -11,7 +11,8 @@ import requests
 import re
 # global varibales
 user = 'quote.conversion@gmail.com'
-password = '@kodama14'
+# password = '@kodama14'
+password = 'qdyjwhkgsukfbwux'
 imap_url = 'imap.gmail.com'
 root_dir = '.'  # root dir path - where attachments are imported, scraped for data, and deleted
 sleep_time = 30  # seconds between each iteration of the program/how often to check inbox for new mail
@@ -130,10 +131,11 @@ def generate_quote_object(file_path):
 
 
 if __name__ == "__main__":  # MAIN METHOD
-    con = auth(user, password, imap_url)  # open connection with imap server
 
     while True:  # endless loop to keep checking inbox for new mail
-        print('Proceeding to check inbox for new emails')
+        con = auth(user, password, imap_url)  # open connection with imap server
+
+        print('IMAP connection made')
         typ, data = con.select('INBOX')  # set mailbox to INBOX
         num_emails = int(data[0])  # get total number of emails in inbox
         if num_emails == 0:
@@ -151,8 +153,9 @@ if __name__ == "__main__":  # MAIN METHOD
                 os.remove(html_file_path)  # delete html file from attachment_dir now that it's no longer needed
             print(f"deleting email #{i} from inbox")
             con.store(b_string, '+FLAGS', r'(\Deleted)')  # delete email from inbox
-        print(f'sleeping for {sleep_time} seconds')
         time.sleep(sleep_time)  # wait x sec before beginning new iteration of while loop
+        print(f'closing IMAP connection and sleeping for {sleep_time} seconds')
+        con.logout()
 
 # git push heroku main   push to remote
 # heroku                 display list of commands

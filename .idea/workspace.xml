@@ -16,10 +16,16 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Conversion_Demo_01.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="10" column="9" lean-forward="true" selection-start-line="10" selection-start-column="9" selection-end-line="10" selection-end-column="9" />
+            <state relative-caret-position="477">
+              <caret line="157" column="8" selection-start-line="157" selection-start-column="8" selection-end-line="157" selection-end-column="8" />
               <folding>
                 <element signature="e#1#15#0" expanded="true" />
+                <element signature="e#514#1166#0" />
+                <element signature="e#1225#2023#0" />
+                <element signature="e#2060#2288#0" />
+                <element signature="e#2626#3240#0" />
+                <element signature="e#3278#3729#0" />
+                <element signature="e#3774#4231#0" />
               </folding>
             </state>
           </provider>
@@ -96,18 +102,18 @@
         <option value="$APPLICATION_CONFIG_DIR$/scratches/ApiData.py" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/Quote_Class.py" />
         <option value="$PROJECT_DIR$/Quote.py" />
-        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
         <option value="$PROJECT_DIR$/Procfile.windows" />
         <option value="$PROJECT_DIR$/Procfile" />
         <option value="$PROJECT_DIR$/runtime.txt" />
         <option value="$PROJECT_DIR$/requirements.txt" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
         <option value="$PROJECT_DIR$/Conversion_Demo_01.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="-41" />
-    <option name="y" value="144" />
+  <component name="ProjectFrameBounds" extendedState="7">
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
     <option name="width" value="1936" />
     <option name="height" value="1056" />
   </component>
@@ -331,7 +337,6 @@
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/test.pdf" />
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/Quote.py" />
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/dict to json test" />
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/dict to json test.py" />
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/ApiData.py" />
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/Quote_Class.py" />
@@ -384,12 +389,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" selection-start-line="3" selection-end-line="5" selection-end-column="32" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Conversion_Demo_01.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="9" lean-forward="true" selection-start-line="10" selection-start-column="9" selection-end-line="10" selection-end-column="9" />
+        <state relative-caret-position="477">
+          <caret line="157" column="8" selection-start-line="157" selection-start-column="8" selection-end-line="157" selection-end-column="8" />
           <folding>
             <element signature="e#1#15#0" expanded="true" />
+            <element signature="e#514#1166#0" />
+            <element signature="e#1225#2023#0" />
+            <element signature="e#2060#2288#0" />
+            <element signature="e#2626#3240#0" />
+            <element signature="e#3278#3729#0" />
+            <element signature="e#3774#4231#0" />
           </folding>
         </state>
       </provider>
