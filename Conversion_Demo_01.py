@@ -12,7 +12,7 @@ import re
 # global varibales
 user = 'quote.conversion@gmail.com'
 # password = '@kodama14'
-password = 'qdyjwhkgsukfbwux'
+password = 'qdyjwhkgsukfbwux'  # Gmail app password increases security, makes IMAP connection more reliable
 imap_url = 'imap.gmail.com'
 root_dir = '.'  # root dir path - where attachments are imported, scraped for data, and deleted
 sleep_time = 30  # seconds between each iteration of the program/how often to check inbox for new mail
@@ -150,6 +150,8 @@ if __name__ == "__main__":  # MAIN METHOD
                 quote_obj = generate_quote_object(html_file_path)  # use html to create quote object
                 send_email(return_email_address, quote_obj)  # send response email
                 os.remove(html_file_path)  # delete html file from attachment_dir now that it's no longer needed
+            else:
+                print('Email had no attachment')
             print(f"deleting email #{i} from inbox")
             con.store(b_string, '+FLAGS', r'(\Deleted)')  # delete email from inbox
         print(f'closing IMAP connection and sleeping for {sleep_time} seconds')
