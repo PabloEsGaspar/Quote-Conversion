@@ -23,7 +23,7 @@ class Quote:
         self.account_rep = 'Josh Miles'
         self.phone = '720.617.0951'
         self.email = 'quotes@kodamagroup.com'
-        self.notes = 'Please contact sales'
+        # self.notes = 'Please contact sales'
         self.special_pricing_code = ''
         self.purchasing_information = []
         self.lines = []

@@ -44,10 +44,11 @@ def create_json_data(receiver_email, quote_object):
     """
     receiver_email_substring = re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.[a-z]+", receiver_email)[0]
     quote_name_str = f'Quote {quote_object.quote_number}'
+    file_name = f'{quote_object.quote_number}-{quote_object.quote_name}'
     data_dict = {'template': 'quotation2', 'font': 'Calibri', 'font_size': 0.9, 'page_numbers': True,
                  'name': quote_name_str}
     data_body = quote_object.__dict__
-    email_data = {'to': receiver_email_substring, 'subject': 'Quote Conversion Response - Do Not Reply'}
+    email_data = {'to': receiver_email_substring, 'filename': file_name, 'subject': 'Quote Conversion Response - Do Not Reply'}
     data_dict['data'] = data_body
     data_dict['email'] = email_data
     json_data = json.dumps(data_dict, default=lambda o: o.__dict__, indent=4)
@@ -136,8 +137,8 @@ def send_connection_failure_email():
     msg = EmailMessage()
     msg['Subject'] = 'WARNING - Quote Conversion Failure'
     msg['From'] = user
-    msg['To'] = 'josh@kodamagroup.com'
-    msg['Cc'] = 'gaspartonnesen@gmail.com'
+    msg['To'] = 'gaspartonnesen@gmail.com'
+    # msg['Cc'] = 'josh@kodamagroup.com'
     msg.set_content(
         "WARNING\n\nQUOTE CONVERSION APP HAS SHUT DOWN DUE TO REPEATED FAILURES TO CONNECT TO GMAIL'S IMAP SERVER."
         "\n\nPLEASE SERVICE ASAP.")  # sets body
@@ -153,8 +154,8 @@ def send_conversion_failure_email(html_file_path):
     msg = EmailMessage()
     msg['Subject'] = 'WARNING - Quote Conversion Failure'
     msg['From'] = user
-    msg['To'] = 'josh@kodamagroup.com'
-    msg['Cc'] = 'gaspartonnesen@gmail.com'
+    msg['To'] = 'gaspartonnesen@gmail.com'
+    # msg['Cc'] = 'josh@kodamagroup.com'
     msg.set_content('WARNING\n\nQuote conversion app failed to convert the attached html file.\n\nApp is still '
                     'operational, but development is required before this file can be processed.')
 

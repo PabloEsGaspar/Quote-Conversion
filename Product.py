@@ -1,12 +1,12 @@
 class Component:
 
-    def __init__(self, name, sku, qty):
+    def __init__(self, name, sku):
         self.description = name
         self.sku = sku
-        self.quantity = qty
+        # self.quantity = qty
 
     def __str__(self):
-        return f'{self.description}\t{self.sku}\t{self.quantity}'
+        return f'{self.description}\t{self.sku}'
 
 
 class Description:
@@ -85,8 +85,8 @@ class ConfigurableProduct(Product):
             name_sku_list = r.find('td', class_='component-name').text.strip().replace('\t', '').split('\n')
             name = name_sku_list[0]
             sku = name_sku_list[1]
-            qty = r.find('td', class_='quantity').text.strip()
-            component_obj = Component(name, sku, qty)
+            # qty = r.find('td', class_='quantity').text.strip()  # component qty removed
+            component_obj = Component(name, sku)
             self.description.configuration.append(component_obj)
 
     def __str__(self):
@@ -113,8 +113,8 @@ class DiscountConfigurableProduct(DiscountProduct):
             name_sku_list = r.find('td', class_='component-name').text.strip().replace('\t', '').split('\n')
             name = name_sku_list[0]
             sku = name_sku_list[1]
-            qty = r.find('td', class_='quantity').text.strip()
-            component_obj = Component(name, sku, qty)
+            # qty = r.find('td', class_='quantity').text.strip()
+            component_obj = Component(name, sku)
             self.description.configuration.append(component_obj)
 
     def __str__(self):
