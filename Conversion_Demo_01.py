@@ -136,8 +136,7 @@ def send_connection_failure_email():
     msg = EmailMessage()
     msg['Subject'] = 'WARNING - Quote Conversion Failure'
     msg['From'] = user
-    # msg['To'] = 'josh@kodamagroup.com'
-    msg['To'] = 'gtonnesen14@gmail.com'
+    msg['To'] = 'josh@kodamagroup.com'
     msg['Cc'] = 'gaspartonnesen@gmail.com'
     msg.set_content(
         "WARNING\n\nQUOTE CONVERSION APP HAS SHUT DOWN DUE TO REPEATED FAILURES TO CONNECT TO GMAIL'S IMAP SERVER."
@@ -154,8 +153,7 @@ def send_conversion_failure_email(html_file_path):
     msg = EmailMessage()
     msg['Subject'] = 'WARNING - Quote Conversion Failure'
     msg['From'] = user
-    # msg['To'] = 'josh@kodamagroup.com'
-    msg['To'] = 'gtonnesen14@gmail.com'
+    msg['To'] = 'josh@kodamagroup.com'
     msg['Cc'] = 'gaspartonnesen@gmail.com'
     msg.set_content('WARNING\n\nQuote conversion app failed to convert the attached html file.\n\nApp is still '
                     'operational, but development is required before this file can be processed.')
