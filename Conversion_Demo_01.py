@@ -11,6 +11,8 @@ import requests
 import re
 import smtplib
 from email.message import EmailMessage
+from datetime import datetime
+
 # global variables
 user = 'quote.conversion@gmail.com'
 # password = '@kodama14'
@@ -29,10 +31,11 @@ def send_email(receiver_email, quote_object):
     """
     headers_dict = {'Authorization': 'Bearer ctCMVLF6pNWrCxj9JZ3e7lEIUbCWAF6kPfyHqh0z', 'Content-Type': 'application/json'}
     json_body = create_json_data(receiver_email, quote_object)
+    print(json_body)
     # print(json.dumps(data, indent=4))
     # print(f'valid json data: {is_json_valid(data)}')  # data param can't be a json string, must be dict, list, etc..
     response = requests.post('https://docamatic.com/api/v1/template', headers=headers_dict, json=json_body)
-    print(response.status_code)
+    print(f'{get_timestamp_string()} | response code from Docamatic: {response.status_code}')
 
 
 def create_json_data(receiver_email, quote_object):
@@ -171,27 +174,31 @@ def send_conversion_failure_email(html_file_path):
         smtp.send_message(msg)
 
 
+def get_timestamp_string():
+    return datetime.now().strftime("%d/%m/%y - %I:%M:%S %p")
+
+
 if __name__ == "__main__":  # MAIN METHOD
     connection_failure_count = 0
     while True:  # endless loop to keep checking inbox for new mail
         try:
             con = auth(user, password, imap_url)  # open connection with imap server
         except:
-            print('IMAP CONNECTION FAILED\nsending email notification of failure')
+            print(f'{get_timestamp_string()} | IMAP CONNECTION FAILED\nsending email notification of failure')
             connection_failure_count += 1
             if connection_failure_count >= 3:
                 send_connection_failure_email()
                 break
         else:
             connection_failure_count = 0
-            print('IMAP connection made')
+            print(f'{get_timestamp_string()} | IMAP connection made')
             typ, data = con.select('INBOX')  # set mailbox to INBOX
             num_emails = int(data[0])  # get total number of emails in inbox
             if num_emails == 0:
-                print('Inbox was empty')
+                print(f'{get_timestamp_string()} | Inbox was empty')
             for i in range(1, num_emails + 1):  # loop through emails in inbox
                 b_string = bytes(str(i), encoding="ascii")  # creates str b'i' / b'1' = the oldest email in the mailbox
-                print(f'Processing email #{i} from inbox')
+                print(f'{get_timestamp_string()} | Processing email #{i} from inbox')
                 result, data = con.fetch(b_string, '(RFC822)')  # fetch email data
                 email_msg = email.message_from_bytes(data[0][1])  # decode email data
                 if email_has_attachment(email_msg):  # check if email has an html attachment
@@ -200,21 +207,22 @@ if __name__ == "__main__":  # MAIN METHOD
                     try:
                         quote_obj = generate_quote_object(html_file_path)  # use html to create quote object
                     except:
-                        print('FAILED TO CONVERT HTML FILE\nsending email notification of failure')
+                        print(f'{get_timestamp_string()} | FAILED TO CONVERT HTML FILE\nsending email notification of '
+                              f'failure')
                         send_conversion_failure_email(html_file_path)
                     else:
                         send_email(return_email_address, quote_obj)  # send response email
                     os.remove(html_file_path)  # delete html file from attachment_dir now that it's no longer needed
                 else:
-                    print('Email had no attachment')
-                print(f"deleting email #{i} from inbox")
+                    print(f'{get_timestamp_string()} | Email had no attachment')
+                print(f"{get_timestamp_string()} | deleting email #{i} from inbox")
                 con.store(b_string, '+FLAGS', r'(\Deleted)')  # delete email from inbox
 
-            print(f'closing IMAP connection\nsleeping for {sleep_time} seconds')
+            print(f'{get_timestamp_string()} | closing IMAP connection | sleeping for {sleep_time} seconds')
             con.logout()
             time.sleep(sleep_time)
 
-    print('APPLICATION TERMINATING DUE TO REPEATED FAILURE...')
+    print(f'{get_timestamp_string()} | APPLICATION TERMINATING DUE TO REPEATED FAILURE...')
 
 
 # git push heroku main   push to remote
