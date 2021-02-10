@@ -6,7 +6,7 @@
 Program receives email with HTML attachment, extracts relevant data from HTML, uses data to create a PDF quote, and returns an email with the PDF quote as an attachment. 
 
 ## User Instructions
-Email HTML file to <quote.conversion@gmail.com>. Emails limited to **ONE ATTACHMENT PER EMAIL**. Additional attachments from the same email will be ignored. Expect to receive response within one minute after intital email is sent. 
+Email HTML file to <quote.conversion@gmail.com>. Emails limited to **ONE ATTACHMENT PER EMAIL**. Additional attachments from the same email will be ignored. Expect to receive response within one minute after intital email is sent. If the application fails to convert the HTML file it will email the attachment back to you with a warning message. 
 
 ## Known Bugs
 Emails to <quote.conversion@gmail.com> might get marked as spam, in which case they will not be seen by the program. To avoid being marked as spam provide developer with a list of sender email addresses. Filters will be updated so that emails received from those addresses will be kept out of the spam folder.  
