@@ -1,4 +1,3 @@
-
 import imaplib
 import email
 import os
@@ -13,9 +12,10 @@ import smtplib
 from email.message import EmailMessage
 from datetime import datetime
 
+
 # global variables
+logo_url = 'https://docamatic.s3-eu-west-1.amazonaws.com/assets/kodama.png'
 user = 'quote.conversion@gmail.com'
-# password = '@kodama14'
 password = 'qdyjwhkgsukfbwux'  # Gmail app password increases security, makes IMAP connection more reliable
 imap_url = 'imap.gmail.com'
 root_dir = '.'  # root dir path - where attachments are imported, scraped for data, and deleted
@@ -30,8 +30,12 @@ def send_email(receiver_email, quote_object):
     :return None:
     """
     headers_dict = {'Authorization': 'Bearer ctCMVLF6pNWrCxj9JZ3e7lEIUbCWAF6kPfyHqh0z', 'Content-Type': 'application/json'}
+    # below code was for image manipulation for providing our own logo but ended up not needing
+    # img = Image.open(urlopen(logo_url))
+    # big_img = img.resize((1856, 307))  # x 116%
+    # big_img.save('kodama_logo_116%.png', 'PNG')
+    # quote_object.company['logo'] = open('kodama_logo_116%.png', 'rb').read()
     json_body = create_json_data(receiver_email, quote_object)
-    print(json_body)
     # print(json.dumps(data, indent=4))
     # print(f'valid json data: {is_json_valid(data)}')  # data param can't be a json string, must be dict, list, etc..
     response = requests.post('https://docamatic.com/api/v1/template', headers=headers_dict, json=json_body)
@@ -54,7 +58,9 @@ def create_json_data(receiver_email, quote_object):
     email_data = {'to': receiver_email_substring, 'filename': file_name, 'subject': 'Quote Conversion Response - Do Not Reply'}
     data_dict['data'] = data_body
     data_dict['email'] = email_data
+    # print(f'data to json.dumps: {data_dict}')
     json_data = json.dumps(data_dict, default=lambda o: o.__dict__, indent=4)
+    print(f'{get_timestamp_string()} | created body of Docamatic request for quote {file_name}')
     data = json.loads(json_data)
     return data
 
@@ -225,6 +231,6 @@ if __name__ == "__main__":  # MAIN METHOD
     print(f'{get_timestamp_string()} | APPLICATION TERMINATING DUE TO REPEATED FAILURE...')
 
 
-# git push heroku main   push to remote
+# git push heroku main   push to remote cloud repo
 # heroku                 display list of commands
 # heroku logs --tail     live feed of console while program runs
