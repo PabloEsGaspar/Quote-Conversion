@@ -159,7 +159,7 @@ def send_connection_failure_email():
         smtp.send_message(msg)
 
 
-def send_conversion_failure_email(html_file_path):
+def send_conversion_failure_email(): # html_file_path
     msg = EmailMessage()
     msg['Subject'] = 'WARNING - Quote Conversion Failure'
     msg['From'] = user
@@ -168,10 +168,10 @@ def send_conversion_failure_email(html_file_path):
     msg.set_content('WARNING\n\nQuote conversion app failed to convert the attached html file.\n\nApp is still '
                     'operational, but development is required before this file can be processed.')
 
-    with open(html_file_path, 'rb') as f:
-        file_data = f.read()
-        file_name = f.name
-        msg.add_attachment(file_data, maintype='application', subtype='html', filename=file_name)
+    # with open(html_file_path, 'rb') as f:
+    #     file_data = f.read()
+    #     file_name = f.name
+    # msg.add_attachment(file_data, maintype='application', subtype='html', filename=file_name)
     with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
         smtp.ehlo()  # identifies ourselves w/ mail server
         smtp.starttls()  # encrypts traffic
@@ -199,13 +199,11 @@ if __name__ == "__main__":  # MAIN METHOD
             connection_failure_count = 0
             print(f'{get_timestamp_string()} | IMAP connection made')
             typ, data = con.select('INBOX')  # set mailbox to INBOX
-            num_emails = int(data[0])  # get total number of emails in inbox
-            if num_emails == 0:
-                print(f'{get_timestamp_string()} | Inbox was empty')
-            for i in range(1, num_emails + 1):  # loop through emails in inbox
-                b_string = bytes(str(i), encoding="ascii")  # creates str b'i' / b'1' = the oldest email in the mailbox
-                print(f'{get_timestamp_string()} | Processing email #{i} from inbox')
-                result, data = con.fetch(b_string, '(RFC822)')  # fetch email data
+            typ, data = con.search(None, 'ALL')
+            count = 1
+            for num in data[0].split():  # loop through emails in inbox
+                print(f'{get_timestamp_string()} | Processing email #{count} from inbox')
+                result, data = con.fetch(num, '(RFC822)')  # fetch email data
                 email_msg = email.message_from_bytes(data[0][1])  # decode email data
                 if email_has_attachment(email_msg):  # check if email has an html attachment
                     html_file_path = get_attachments(email_msg)  # store html attachment in attachment_dir folder
@@ -221,9 +219,11 @@ if __name__ == "__main__":  # MAIN METHOD
                     os.remove(html_file_path)  # delete html file from attachment_dir now that it's no longer needed
                 else:
                     print(f'{get_timestamp_string()} | Email had no attachment')
-                print(f"{get_timestamp_string()} | deleting email #{i} from inbox")
-                con.store(b_string, '+FLAGS', r'(\Deleted)')  # delete email from inbox
-
+                print(f"{get_timestamp_string()} | deleting email #{count} from inbox")
+                con.store(num, '+FLAGS', r'(\Deleted)')  # delete email from inbox
+                time.sleep(sleep_time)
+                count += 1
+            con.expunge()
             print(f'{get_timestamp_string()} | closing IMAP connection | sleeping for {sleep_time} seconds')
             con.logout()
             time.sleep(sleep_time)
