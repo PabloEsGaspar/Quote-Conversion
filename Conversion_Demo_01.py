@@ -11,6 +11,8 @@ import re
 import smtplib
 from email.message import EmailMessage
 from datetime import datetime
+from email.header import decode_header
+
 
 
 # global variables
@@ -19,7 +21,44 @@ user = 'quote.conversion@gmail.com'
 password = 'qdyjwhkgsukfbwux'  # Gmail app password increases security, makes IMAP connection more reliable
 imap_url = 'imap.gmail.com'
 root_dir = '.'  # root dir path - where attachments are imported, scraped for data, and deleted
-sleep_time = 30  # seconds between each iteration of the program/how often to check inbox for new mail
+sleep_time = 45  # seconds between each iteration of the program/how often to check inbox for new mail
+
+
+def send_connection_failure_email():
+    msg = EmailMessage()
+    msg['Subject'] = 'WARNING - Quote Conversion Failure'
+    msg['From'] = user
+    msg['To'] = 'gaspartonnesen@gmail.com'
+    # msg['Cc'] = 'josh@kodamagroup.com'
+    msg.set_content(
+        "WARNING\n\nQUOTE CONVERSION APP HAS SHUT DOWN DUE TO REPEATED FAILURES TO CONNECT TO GMAIL'S IMAP SERVER."
+        "\n\nPLEASE SERVICE ASAP.")  # sets body
+    with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
+        smtp.ehlo()  # identifies ourselves w/ mail server
+        smtp.starttls()  # encrypts traffic
+        smtp.ehlo()
+        smtp.login(user, password)
+        smtp.send_message(msg)
+
+
+def send_conversion_failure_email():  # html_file_path
+    msg = EmailMessage()
+    msg['Subject'] = 'WARNING - Quote Conversion Failure'
+    msg['From'] = user
+    msg['To'] = 'gaspartonnesen@gmail.com'
+    # msg['Cc'] = 'josh@kodamagroup.com'
+    msg.set_content('WARNING\n\nQuote conversion app failed to convert the attached html file.\n\nApp is still '
+                    'operational, but development is required before this file can be processed.')
+    # with open(html_file_path, 'rb') as f:
+    #     file_data = f.read()
+    #     file_name = f.name
+    # msg.add_attachment(file_data, maintype='application', subtype='html', filename=file_name)
+    with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
+        smtp.ehlo()  # identifies ourselves w/ mail server
+        smtp.starttls()  # encrypts traffic
+        smtp.ehlo()
+        smtp.login(user, password)
+        smtp.send_message(msg)
 
 
 def send_email(receiver_email, quote_object):
@@ -102,7 +141,7 @@ def get_attachments(msg):
             continue
         if part.get('Content-Disposition') is None:
             continue
-        file_name = part.get_filename()
+        file_name = get_part_filename(part)
         if bool(file_name):
             file_path = os.path.join(root_dir, file_name)
             with open(file_path, 'wb') as f:
@@ -121,11 +160,23 @@ def email_has_attachment(msg):
             continue
         if part.get('Content-Disposition') is None:
             continue
-        file_name = part.get_filename()
+        file_name = get_part_filename(part)
         if file_name.endswith('.html'):
             return bool(file_name)
         else:
             return False
+
+
+def get_part_filename(msg: EmailMessage):
+    """
+    decodes filename if necessary, otherwise just returns the regular filename
+    :param msg:
+    :return:
+    """
+    filename = msg.get_filename()
+    if decode_header(filename)[0][1] is not None:
+        filename = decode_header(filename)[0][0].decode(decode_header(filename)[0][1])
+    return filename
 
 
 def generate_quote_object(file_path):
@@ -140,44 +191,6 @@ def generate_quote_object(file_path):
     quote_object = Quote()
     quote_object.populate(soup)
     return quote_object
-
-
-def send_connection_failure_email():
-    msg = EmailMessage()
-    msg['Subject'] = 'WARNING - Quote Conversion Failure'
-    msg['From'] = user
-    msg['To'] = 'gaspartonnesen@gmail.com'
-    # msg['Cc'] = 'josh@kodamagroup.com'
-    msg.set_content(
-        "WARNING\n\nQUOTE CONVERSION APP HAS SHUT DOWN DUE TO REPEATED FAILURES TO CONNECT TO GMAIL'S IMAP SERVER."
-        "\n\nPLEASE SERVICE ASAP.")  # sets body
-    with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
-        smtp.ehlo()  # identifies ourselves w/ mail server
-        smtp.starttls()  # encrypts traffic
-        smtp.ehlo()
-        smtp.login(user, password)
-        smtp.send_message(msg)
-
-
-def send_conversion_failure_email(): # html_file_path
-    msg = EmailMessage()
-    msg['Subject'] = 'WARNING - Quote Conversion Failure'
-    msg['From'] = user
-    msg['To'] = 'gaspartonnesen@gmail.com'
-    # msg['Cc'] = 'josh@kodamagroup.com'
-    msg.set_content('WARNING\n\nQuote conversion app failed to convert the attached html file.\n\nApp is still '
-                    'operational, but development is required before this file can be processed.')
-
-    # with open(html_file_path, 'rb') as f:
-    #     file_data = f.read()
-    #     file_name = f.name
-    # msg.add_attachment(file_data, maintype='application', subtype='html', filename=file_name)
-    with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
-        smtp.ehlo()  # identifies ourselves w/ mail server
-        smtp.starttls()  # encrypts traffic
-        smtp.ehlo()
-        smtp.login(user, password)
-        smtp.send_message(msg)
 
 
 def get_timestamp_string():
@@ -195,21 +208,21 @@ if __name__ == "__main__":  # MAIN METHOD
             if connection_failure_count >= 3:
                 send_connection_failure_email()
                 break
-
         connection_failure_count = 0
-        print(f'{get_timestamp_string()} | Successfully connected to IMAP Server - quote.conversion@gmail.com mailbox is now accessible')
+        print(f'{get_timestamp_string()} '
+              f'| Successfully connected to IMAP Server - quote.conversion@gmail.com mailbox is now accessible')
         typ, data = con.select('INBOX')  # set mailbox to INBOX
         typ, data = con.search(None, 'ALL')
-
         email_list = data[0].split()
         if len(email_list) == 0:
             print(f'{get_timestamp_string()} | No messages found - INBOX was empty')
         else:
             count = 1
             for num in data[0].split():  # loop through emails in inbox
-                print(f'{get_timestamp_string()} | Processing email #{count} from inbox')
+                print(f'{get_timestamp_string()} | Processing email #{num} from inbox')
                 result, data = con.fetch(num, '(RFC822)')  # fetch email data
                 email_msg = email.message_from_bytes(data[0][1])  # decode email data
+
                 if email_has_attachment(email_msg):  # check if email has an html attachment
                     html_file_path = get_attachments(email_msg)  # store html attachment in attachment_dir folder
                     return_email_address = email_msg.get('FROM')  # save the email's 'from' address to variable
@@ -228,7 +241,6 @@ if __name__ == "__main__":  # MAIN METHOD
                     print(f'{get_timestamp_string()} | Email had no attachment')
                 print(f"{get_timestamp_string()} | deleting email #{count} from inbox")
                 con.store(num, '+FLAGS', r'(\Deleted)')  # delete email from inbox
-                time.sleep(sleep_time)
                 count += 1
         con.expunge()
         print(f'{get_timestamp_string()} | closing IMAP connection | sleeping for {sleep_time} seconds')
