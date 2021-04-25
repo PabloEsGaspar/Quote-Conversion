@@ -14,8 +14,6 @@ from datetime import datetime
 from email.header import decode_header
 
 
-
-# global variables
 logo_url = 'https://docamatic.s3-eu-west-1.amazonaws.com/assets/kodama.png'
 user = 'quote.conversion@gmail.com'
 password = 'qdyjwhkgsukfbwux'  # Gmail app password increases security, makes IMAP connection more reliable
@@ -68,7 +66,8 @@ def send_email(receiver_email, quote_object):
     :param quote_object:
     :return None:
     """
-    headers_dict = {'Authorization': 'Bearer ctCMVLF6pNWrCxj9JZ3e7lEIUbCWAF6kPfyHqh0z', 'Content-Type': 'application/json'}
+    headers_dict = {'Authorization': 'Bearer ctCMVLF6pNWrCxj9JZ3e7lEIUbCWAF6kPfyHqh0z',
+                    'Content-Type': 'application/json'}
     # below code was for image manipulation for providing our own logo but ended up not needing
     # img = Image.open(urlopen(logo_url))
     # big_img = img.resize((1856, 307))  # x 116%
@@ -209,8 +208,7 @@ if __name__ == "__main__":  # MAIN METHOD
                 send_connection_failure_email()
                 break
         connection_failure_count = 0
-        print(f'{get_timestamp_string()} '
-              f'| Successfully connected to IMAP Server - quote.conversion@gmail.com mailbox is now accessible')
+        print(f'{get_timestamp_string()} | Successfully connected to IMAP Server - mailbox is now accessible')
         typ, data = con.select('INBOX')  # set mailbox to INBOX
         typ, data = con.search(None, 'ALL')
         email_list = data[0].split()
@@ -239,11 +237,12 @@ if __name__ == "__main__":  # MAIN METHOD
                     os.remove(html_file_path)  # delete html file from attachment_dir now that it's no longer needed
                 else:
                     print(f'{get_timestamp_string()} | Email had no attachment')
-                print(f"{get_timestamp_string()} | deleting email #{count} from inbox")
+                print(f"{get_timestamp_string()} | deleting email #{num} from inbox")
                 con.store(num, '+FLAGS', r'(\Deleted)')  # delete email from inbox
                 count += 1
         con.expunge()
-        print(f'{get_timestamp_string()} | closing IMAP connection | sleeping for {sleep_time} seconds')
+        print(f'{get_timestamp_string()} | closing IMAP connection | sleeping for {sleep_time} seconds\n'
+              f'------------------------------------------------------------------------------------------------------')
         con.logout()
         time.sleep(sleep_time)
 
