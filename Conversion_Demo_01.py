@@ -215,6 +215,8 @@ if __name__ == "__main__":  # MAIN METHOD
                     return_email_address = email_msg.get('FROM')  # save the email's 'from' address to variable
                     try:
                         quote_obj = generate_quote_object(html_file_path)  # use html to create quote object
+                        print(f"{get_timestamp_string()} | Successfully extracted data from HTML file & "
+                              f"used it to construct 'Quote' object")
                     except:
                         print(f'{get_timestamp_string()} | FAILED TO CONVERT HTML FILE\nsending email notification of '
                               f'failure')
