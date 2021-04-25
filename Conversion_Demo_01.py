@@ -195,11 +195,16 @@ if __name__ == "__main__":  # MAIN METHOD
             if connection_failure_count >= 3:
                 send_connection_failure_email()
                 break
+
+        connection_failure_count = 0
+        print(f'{get_timestamp_string()} | Successfully connected to IMAP Server - quote.conversion@gmail.com mailbox is now accessible')
+        typ, data = con.select('INBOX')  # set mailbox to INBOX
+        typ, data = con.search(None, 'ALL')
+
+        email_list = data[0].split()
+        if len(email_list) == 0:
+            print(f'{get_timestamp_string()} | No messages found - INBOX was empty')
         else:
-            connection_failure_count = 0
-            print(f'{get_timestamp_string()} | IMAP connection made')
-            typ, data = con.select('INBOX')  # set mailbox to INBOX
-            typ, data = con.search(None, 'ALL')
             count = 1
             for num in data[0].split():  # loop through emails in inbox
                 print(f'{get_timestamp_string()} | Processing email #{count} from inbox')
@@ -223,10 +228,10 @@ if __name__ == "__main__":  # MAIN METHOD
                 con.store(num, '+FLAGS', r'(\Deleted)')  # delete email from inbox
                 time.sleep(sleep_time)
                 count += 1
-            con.expunge()
-            print(f'{get_timestamp_string()} | closing IMAP connection | sleeping for {sleep_time} seconds')
-            con.logout()
-            time.sleep(sleep_time)
+        con.expunge()
+        print(f'{get_timestamp_string()} | closing IMAP connection | sleeping for {sleep_time} seconds')
+        con.logout()
+        time.sleep(sleep_time)
 
     print(f'{get_timestamp_string()} | APPLICATION TERMINATING DUE TO REPEATED FAILURE...')
 
