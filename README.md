@@ -9,7 +9,7 @@ Program receives email with HTML attachment, extracts relevant data from HTML, u
 Email HTML file to <quote.conversion@gmail.com>. Emails limited to **ONE ATTACHMENT PER EMAIL**. Additional attachments from the same email will be ignored. Expect to receive response within one minute after intital email is sent. If the application fails to convert the HTML file it will email the attachment back to you with a warning message. 
 
 ## Known Bugs
-1. Emails to <quote.conversion@gmail.com> might get marked as spam, in which case they will not be seen by the program. Ways to avoid being marked as spam are as follows: Include subject and body when sending your request email. Provide developer with a list of sender email addresses. Filters will be updated so that emails received from those addresses will be kept out of the spam folder.  
+1. Emails to <quote.conversion@gmail.com> might get marked as spam, in which case they will not be seen by the program. Ways to avoid being marked as spam are as follows: Include subject and body when sending your request email. Provide developer with a list of sender email addresses so filters can be updated to keep those addresses out of the spam folder.  
 2. The response email may also end up in your spam folder. To avoid this you can add a filter to your email that prevents emails recevied from <no-reply@docamatic.com> from being marked as spam.   
 3. For anyone using a corporate email, the response message may not make it past your company's firewall. Solution unknown. 
 
