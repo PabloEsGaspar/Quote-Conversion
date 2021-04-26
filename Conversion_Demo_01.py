@@ -68,14 +68,7 @@ def send_email(receiver_email, quote_object):
     """
     headers_dict = {'Authorization': 'Bearer ctCMVLF6pNWrCxj9JZ3e7lEIUbCWAF6kPfyHqh0z',
                     'Content-Type': 'application/json'}
-    # below code was for image manipulation for providing our own logo but ended up not needing
-    # img = Image.open(urlopen(logo_url))
-    # big_img = img.resize((1856, 307))  # x 116%
-    # big_img.save('kodama_logo_116%.png', 'PNG')
-    # quote_object.company['logo'] = open('kodama_logo_116%.png', 'rb').read()
     json_body = create_json_data(receiver_email, quote_object)
-    # print(json.dumps(data, indent=4))
-    # print(f'valid json data: {is_json_valid(data)}')  # data param can't be a json string, must be dict, list, etc..
     response = requests.post('https://docamatic.com/api/v1/template', headers=headers_dict, json=json_body)
     print(f'{get_timestamp_string()} | response code from Docamatic: {response.status_code}')
 
@@ -93,10 +86,15 @@ def create_json_data(receiver_email, quote_object):
     data_dict = {'template': 'quotation2', 'font': 'Calibri', 'font_size': 0.9, 'page_numbers': True,
                  'name': quote_name_str}
     data_body = quote_object.__dict__
-    email_data = {'to': receiver_email_substring, 'filename': file_name, 'subject': 'Quote Conversion Response - Do Not Reply'}
+    text_body = "This email is an automated response to a conversion request we received from this address. " \
+                "The HTML file you provided has successfully completed the conversion process and the resulting " \
+                "pdf quote is attached. This response email represents both completion & delivery of the converted " \
+                "pdf document. Please continue to send your conversion requests to quote.conversion@gmail.com. "
+
+    email_data = {'to': receiver_email_substring, 'filename': file_name,
+                  'subject': 'Quote Conversion Response - Do Not Reply', 'body': text_body}
     data_dict['data'] = data_body
     data_dict['email'] = email_data
-    # print(f'data to json.dumps: {data_dict}')
     json_data = json.dumps(data_dict, default=lambda o: o.__dict__, indent=4)
     print(f'{get_timestamp_string()} | created body of Docamatic request for quote {file_name}')
     data = json.loads(json_data)
@@ -241,7 +239,7 @@ if __name__ == "__main__":  # MAIN METHOD
                 con.store(num, '+FLAGS', r'(\Deleted)')  # delete email from inbox
                 count += 1
         con.expunge()
-        print(f'{get_timestamp_string()} | closing IMAP connection | sleeping for {sleep_time} seconds\n'
+        print(f'{get_timestamp_string()} | closing IMAP connection - sleeping for {sleep_time} seconds\n'
               f'------------------------------------------------------------------------------------------------------')
         con.logout()
         time.sleep(sleep_time)

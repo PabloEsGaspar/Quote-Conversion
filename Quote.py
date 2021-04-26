@@ -127,6 +127,7 @@ class Quote:
             special_pricing_code_string = f'Special Pricing Code: {self.special_pricing_code}'
         return f'\nQuote Name: {self.quote_name}\nQuote Number: {self.quote_number}' \
                f'\nDate Created: {self.quote_date}\nExpiration Date: {self.quote_expiration}\n' \
-               f'Subtotal: {self.subtotal}\nQuote Total: {self.total}\nContract Name: missing code retrieve contract name\n' + \
+               f'Subtotal: {self.subtotal}\nQuote Total: {self.total}' \
+               f'\nContract Name: missing code retrieve contract name\n' + \
                special_pricing_code_string + '\n\n' + product_string
 
