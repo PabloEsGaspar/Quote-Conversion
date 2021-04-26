@@ -89,7 +89,7 @@ def create_json_data(receiver_email, quote_object):
     text_body = "This email is an automated response to a conversion request we received from this address. " \
                 "The HTML file you provided has successfully completed the conversion process and the resulting " \
                 "pdf quote is attached. This response email represents both completion & delivery of the converted " \
-                "pdf document. Please continue to send your conversion requests to quote.conversion@gmail.com. "
+                "pdf document. Thank you for converting with quote.conversion@gmail.com."
 
     email_data = {'to': receiver_email_substring, 'filename': file_name,
                   'subject': 'Quote Conversion Response - Do Not Reply', 'body': text_body}
@@ -139,7 +139,7 @@ def get_attachments(msg):
         if part.get('Content-Disposition') is None:
             continue
         file_name = get_part_filename(part)
-        if bool(file_name):
+        if file_name.endswith('.html') and bool(file_name):
             file_path = os.path.join(root_dir, file_name)
             with open(file_path, 'wb') as f:
                 f.write(part.get_payload(decode=True))
@@ -158,10 +158,13 @@ def email_has_attachment(msg):
         if part.get('Content-Disposition') is None:
             continue
         file_name = get_part_filename(part)
+        if not file_name.endswith('.html'):
+            continue
         if file_name.endswith('.html'):
             return bool(file_name)
         else:
             return False
+    return False
 
 
 def get_part_filename(msg: EmailMessage):
