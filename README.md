@@ -3,7 +3,7 @@
 *Kodama Group proprietary information* 
 
 ## Description
-Program receives email with HTML attachment, extracts relevant data from HTML, uses data to create a PDF quote, and returns as email attachment 
+Program receives email with HTML attachment, extracts relevant data from HTML, uses data to create a PDF quote, and returns PDF as an email attachment. 
 
 ## User Instructions
 Email HTML file to <quote.conversion@gmail.com>. Emails limited to **ONE ATTACHMENT PER EMAIL**. Additional attachments from the same email will be ignored. Expect to receive response within one minute after intital email is sent. If the application fails to convert the HTML file it will email the attachment back to you with a warning message. 
