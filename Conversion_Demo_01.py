@@ -209,16 +209,15 @@ if __name__ == "__main__":  # MAIN METHOD
                 send_connection_failure_email()
                 break
         connection_failure_count = 0
-        print(f'{get_timestamp_string()} | Successfully connected to IMAP Server - mailbox is now accessible')
+        print(f'{get_timestamp_string()} | Successfully connected to IMAP Server - Mailbox accessible')
         typ, data = con.select('INBOX')  # set mailbox to INBOX
         typ, data = con.search(None, 'ALL')
         email_list = data[0].split()
         if len(email_list) == 0:
             print(f'{get_timestamp_string()} | No messages found - INBOX was empty')
         else:
-            count = 1
             for num in data[0].split():  # loop through emails in inbox
-                print(f'{get_timestamp_string()} | Processing email #{num} from inbox')
+                print(f'{get_timestamp_string()} | Began processing email #{num} from inbox')
                 result, data = con.fetch(num, '(RFC822)')  # fetch email data
                 email_msg = email.message_from_bytes(data[0][1])  # decode email data
 
@@ -226,8 +225,10 @@ if __name__ == "__main__":  # MAIN METHOD
                     html_file_path = get_attachments(email_msg)  # store html attachment in attachment_dir folder
                     return_email_address = email_msg.get('FROM')  # save the email's 'from' address to variable
                     try:
+                        print(f'{get_timestamp_string()} | Began scraping html data | Html sent from '
+                              f'{return_email_address}')
                         quote_obj = generate_quote_object(html_file_path)  # use html to create quote object
-                        print(f"{get_timestamp_string()} | Successfully extracted data from HTML file & "
+                        print(f"{get_timestamp_string()} | Successfully extracted html data into a Quote object "
                               f"used it to construct 'Quote' object")
                     except:
                         print(f'{get_timestamp_string()} | FAILED TO CONVERT HTML FILE\nsending email notification of '
@@ -240,9 +241,9 @@ if __name__ == "__main__":  # MAIN METHOD
                     print(f'{get_timestamp_string()} | Email had no attachment')
                 print(f"{get_timestamp_string()} | deleting email #{num} from inbox")
                 con.store(num, '+FLAGS', r'(\Deleted)')  # delete email from inbox
-                count += 1
         con.expunge()
-        print(f'{get_timestamp_string()} | closing IMAP connection - sleeping for {sleep_time} seconds\n'
+        print(f'{get_timestamp_string()} | closing IMAP connection - Killed mailbox access ')
+        print(f'{get_timestamp_string()} | sleeping for {sleep_time} seconds\n'
               f'------------------------------------------------------------------------------------------------------')
         con.logout()
         time.sleep(sleep_time)
