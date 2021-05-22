@@ -86,15 +86,12 @@ def create_json_data(receiver_email, quote_object):
     data_dict = {'template': 'quotation2', 'font': 'Calibri', 'font_size': 0.9, 'page_numbers': True,
                  'name': quote_name_str}
     data_body = quote_object.__dict__
-    text_body = "Hello, this email is an automated response to your conversion request." \
-                "The html file you provided has completed the conversion process and the resulting " \
+    text_body = "Hello, this email is an automated response to a conversion request sent from " + receiver_email_substring + \
+                ". The html file you provided has completed the conversion process and the resulting " \
                 "pdf quote should be attached and accurate. If this is not the case please forward this email to " \
-                "gaspartonnesen@gmail.com"
+                "gaspartonnesen@gmail.com."
 
-
-
-
-    email_data = {'to': receiver_email_substring, 'filename': file_name,
+    email_data = {'to': 'quotes@kodamagroup.com', 'filename': file_name,
                   'subject': 'Quote Conversion Response - Do Not Reply', 'body': text_body}
     data_dict['data'] = data_body
     data_dict['email'] = email_data
