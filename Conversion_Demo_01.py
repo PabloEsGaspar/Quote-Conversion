@@ -39,14 +39,15 @@ def send_connection_failure_email():
         smtp.send_message(msg)
 
 
-def send_conversion_failure_email():  # html_file_path
+def send_conversion_failure_email(return_address):  # html_file_path
     msg = EmailMessage()
     msg['Subject'] = 'WARNING - Quote Conversion Failure'
     msg['From'] = user
-    msg['To'] = 'gaspartonnesen@gmail.com'
-    # msg['Cc'] = 'josh@kodamagroup.com'
-    msg.set_content('WARNING\n\nQuote conversion app failed to convert the attached html file.\n\nApp is still '
-                    'operational, but development is required before this file can be processed.')
+    msg['To'] = 'quotes@kodamagroup.com'
+    msg['Cc'] = 'gaspartonnesen@gmail.com'
+    msg.set_content('WARNING\n\nQuote conversion app failed to convert the html file that was sent by ' +
+                    return_address + '.\n\nApp is still operational, but development is required before this '
+                                     'file can be processed.')
     # with open(html_file_path, 'rb') as f:
     #     file_data = f.read()
     #     file_name = f.name
@@ -233,7 +234,7 @@ if __name__ == "__main__":  # MAIN METHOD
                     except:
                         print(f'{get_timestamp_string()} | FAILED TO CONVERT HTML FILE\nsending email notification of '
                               f'failure')
-                        send_conversion_failure_email()  # html_file_path
+                        send_conversion_failure_email(return_email_address)
                     else:
                         send_email(return_email_address, quote_obj)  # send response email
                     os.remove(html_file_path)  # delete html file from attachment_dir now that it's no longer needed
