@@ -91,7 +91,7 @@ def create_json_data(receiver_email, quote_object):
                 "pdf quote should be attached and accurate. If this is not the case please forward this email to " \
                 "gaspartonnesen@gmail.com."
 
-    email_data = {'to': 'gaspartonnesen@gmail.com', 'filename': file_name,  # quotes@kodamagroup.com
+    email_data = {'to': 'quotes@kodamagroup.com', 'filename': file_name,
                   'subject': 'Quote Conversion Response - Do Not Reply', 'body': text_body}
     data_dict['data'] = data_body
     data_dict['email'] = email_data
