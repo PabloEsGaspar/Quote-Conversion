@@ -91,7 +91,7 @@ def create_json_data(receiver_email, quote_object):
                 "pdf quote should be attached and accurate. If this is not the case please forward this email to " \
                 "gaspartonnesen@gmail.com."
 
-    email_data = {'to': 'quotes@kodamagroup.com', 'filename': file_name,
+    email_data = {'to': 'gaspartonnesen@gmail.com', 'filename': file_name,  # quotes@kodamagroup.com
                   'subject': 'Quote Conversion Response - Do Not Reply', 'body': text_body}
     data_dict['data'] = data_body
     data_dict['email'] = email_data
@@ -233,7 +233,7 @@ if __name__ == "__main__":  # MAIN METHOD
                     except:
                         print(f'{get_timestamp_string()} | FAILED TO CONVERT HTML FILE\nsending email notification of '
                               f'failure')
-                        send_conversion_failure_email(html_file_path)
+                        send_conversion_failure_email()  # html_file_path
                     else:
                         send_email(return_email_address, quote_obj)  # send response email
                     os.remove(html_file_path)  # delete html file from attachment_dir now that it's no longer needed
