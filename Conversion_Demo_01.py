@@ -43,6 +43,7 @@ def send_conversion_failure_email(return_address):  # html_file_path
     msg = EmailMessage()
     msg['Subject'] = 'WARNING - Quote Conversion Failure'
     msg['From'] = user
+    # msg['To'] = 'gaspartonnesen@gmail.com'
     msg['To'] = 'quotes@kodamagroup.com'
     msg['Cc'] = 'gaspartonnesen@gmail.com'
     msg.set_content('WARNING\n\nQuote conversion app failed to convert the html file that was sent by ' +

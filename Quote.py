@@ -55,8 +55,8 @@ class Quote:
 
     def populate_purchasing_information(self, soup):
         purchase_info_01 = PurchasingInfo('HP Quote Number', self.quote_number)
-        purchase_info_02 = PurchasingInfo('Contract Name', soup.find('div', class_='contract')  # *****BUG*****
-                                          .find('p', class_='company-view').text.strip())
+        purchase_info_02 = PurchasingInfo('Contract Name', soup.find('div', class_='session-link')
+                                          .find('h4', class_='company-view').text.strip())
         purchase_info_03 = PurchasingInfo('Purchasing Instructions',
                                           'Please make PO out to HP Inc, list Partner ID: 991000721949 and Quote ID:'
                                           ' 1594087 on PO. Forward PO to orders@kodamagroup.com for processing. '
