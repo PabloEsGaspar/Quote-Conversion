@@ -29,17 +29,8 @@ class Quote:
         self.lines = []
         self.subtotal = ''
         self.total = ''
-        self.terms_and_conditions = ['The terms and conditions of the CO - STATE OF COLORADO (NASPO VP PC) '
-                                     '[2016000000000142NASPO] contract will apply to any order placed as a result of '
-                                     'this inquiry, no other terms or conditions shall apply.',
-                                     'HP and/or Kodama Group, LLC are not liable for pricing errors. '
-                                     'If you place an order for a product that was incorrectly priced, '
-                                     'we will cancel your order and credit you for any charges. '
-                                     'In the event that we inadvertently ship an order based on a pricing error, '
-                                     'we will issue a revised invoice to you for the correct price and contact you to '
-                                     'obtain your authorization for the additional charge, or assist you with return '
-                                     'of the product. If the pricing error results in an overcharge to you, HP will '
-                                     'credit your account for the amount overcharged.', 'Freight is FOB Destination.']
+        self.terms_and_conditions = []
+
         self.custom_tables = [{'head': 'HP Inc. Vendor Address', 'body': 'The HP, Inc. Vendor address is:\n\nHP Inc.'
                                '\nAttn: Public Sector Sales\n3800 Quick Hill Road\nBldg 2, Suite 100'
                                                                          '\nAustin, TX 78728'}]
@@ -55,15 +46,30 @@ class Quote:
 
     def populate_purchasing_information(self, soup):
         purchase_info_01 = PurchasingInfo('HP Quote Number', self.quote_number)
-        purchase_info_02 = PurchasingInfo('Contract Name', soup.find('div', class_='session-link')
+        contract = PurchasingInfo('Contract Name', soup.find('div', class_='session-link')
                                           .find('h4', class_='company-view').text.strip())
+        self.populate_terms_and_conditions(contract.value)
         purchase_info_03 = PurchasingInfo('Purchasing Instructions',
-                                          'Please make PO out to HP Inc, list Partner ID: 991000721949 and Quote ID:'
-                                          ' 1594087 on PO. Forward PO to orders@kodamagroup.com for processing. '
+                                          'Please make PO out to HP Inc, list Partner ID: 991000721949 and Quote ID: '
+                                          + self.quote_number +
+                                          ' on PO. Forward PO to orders@kodamagroup.com for processing. '
                                           'Do not send to HP. Thank you!')
         self.purchasing_information.append(purchase_info_01)
-        self.purchasing_information.append(purchase_info_02)
+        self.purchasing_information.append(contract)
         self.purchasing_information.append(purchase_info_03)
+
+    def populate_terms_and_conditions(self, contract_value):
+        self.terms_and_conditions = ['The terms and conditions of the ' + contract_value +
+                                     ' contract will apply to any order placed as a result of '
+                                     'this inquiry, no other terms or conditions shall apply.',
+                                     'HP and/or Kodama Group, LLC are not liable for pricing errors. '
+                                     'If you place an order for a product that was incorrectly priced, '
+                                     'we will cancel your order and credit you for any charges. '
+                                     'In the event that we inadvertently ship an order based on a pricing error, '
+                                     'we will issue a revised invoice to you for the correct price and contact you to '
+                                     'obtain your authorization for the additional charge, or assist you with return '
+                                     'of the product. If the pricing error results in an overcharge to you, HP will '
+                                     'credit your account for the amount overcharged.', 'Freight is FOB Destination.']
 
     def populate_list_of_products(self, soup):
         """

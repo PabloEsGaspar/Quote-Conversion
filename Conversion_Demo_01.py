@@ -94,7 +94,8 @@ def create_json_data(receiver_email, quote_object):
                 "gaspartonnesen@gmail.com."
 
     email_data = {'to': 'quotes@kodamagroup.com', 'filename': file_name,
-                  'subject': 'Quote Conversion Response - Do Not Reply', 'body': text_body}
+                  'subject': quote_obj.quote_name + ' Quote Conversion Response - Do Not Reply', 'body': text_body}
+
     data_dict['data'] = data_body
     data_dict['email'] = email_data
     json_data = json.dumps(data_dict, default=lambda o: o.__dict__, indent=4)
