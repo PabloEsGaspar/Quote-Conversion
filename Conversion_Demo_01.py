@@ -43,11 +43,11 @@ def send_conversion_failure_email(return_address):  # html_file_path
     msg = EmailMessage()
     msg['Subject'] = 'WARNING - Quote Conversion Failure'
     msg['From'] = user
-    # msg['To'] = 'gaspartonnesen@gmail.com'
-    msg['To'] = 'quotes@kodamagroup.com'
+    msg['To'] = 'gaspartonnesen@gmail.com'
+    # msg['To'] = 'quotes@kodamagroup.com'
     msg['Cc'] = 'gaspartonnesen@gmail.com'
-    msg.set_content('WARNING\n\nQuote conversion app failed to convert the html file that was sent by ' +
-                    return_address + '.\n\nApp is still operational, but development is required before this '
+    msg.set_content('WARNING\n\nQuote conversion app failed to convert a html file that was sent by ' +
+                    return_address + '.\n\nApp is still operational, but development is required before the '
                                      'file can be processed.')
     # with open(html_file_path, 'rb') as f:
     #     file_data = f.read()
@@ -92,8 +92,8 @@ def create_json_data(receiver_email, quote_object):
                 ". The html file you provided has completed the conversion process and the resulting " \
                 "pdf quote should be attached and accurate. If this is not the case please forward this email to " \
                 "gaspartonnesen@gmail.com."
-
-    email_data = {'to': 'quotes@kodamagroup.com', 'filename': file_name,
+    email_data = {'to': 'gaspartonnesen@gmail.com', 'filename': file_name,
+                  # email_data = {'to': 'quotes@kodamagroup.com', 'filename': file_name,
                   'subject': quote_obj.quote_name + ' Quote Conversion Response - Do Not Reply', 'body': text_body}
 
     data_dict['data'] = data_body
@@ -130,12 +130,13 @@ def auth(user, password, imap_url):
     return connection
 
 
-def get_attachments(msg):
+def get_all_attachments(msg):
     """
     Saves the email attachment in the attachment_dir folder so that we can begin data scraping
     :param msg:
     :return file_path: (where the html file is now located)
     """
+    html_file_paths = []
     for part in msg.walk():
         if part.get_content_maintype() == 'multipart':
             continue
@@ -146,7 +147,8 @@ def get_attachments(msg):
             file_path = os.path.join(root_dir, file_name)
             with open(file_path, 'wb') as f:
                 f.write(part.get_payload(decode=True))
-            return file_path
+            html_file_paths.append(file_path);
+    return html_file_paths
 
 
 def email_has_attachment(msg):
@@ -225,23 +227,26 @@ if __name__ == "__main__":  # MAIN METHOD
                 email_msg = email.message_from_bytes(data[0][1])  # decode email data
 
                 if email_has_attachment(email_msg):  # check if email has an html attachment
-                    html_file_path = get_attachments(email_msg)  # store html attachment in attachment_dir folder
-                    return_email_address = email_msg.get('FROM')  # save the email's 'from' address to variable
-                    try:
-                        print(f'{get_timestamp_string()} | Began scraping html data | Html sent from '
-                              f'{return_email_address}')
-                        quote_obj = generate_quote_object(html_file_path)  # use html to create quote object
-                        print(f"{get_timestamp_string()} | Successfully extracted html data into a Quote object "
-                              f"used it to construct 'Quote' object")
-                    except:
-                        print(f'{get_timestamp_string()} | FAILED TO CONVERT HTML FILE\nsending email notification of '
-                              f'failure')
-                        send_conversion_failure_email(return_email_address)
-                    else:
-                        send_email(return_email_address, quote_obj)  # send response email
-                    os.remove(html_file_path)  # delete html file from attachment_dir now that it's no longer needed
+
+                    return_email_address = email_msg.get('FROM')  # save the email's 'from' address
+                    list_of_html_file_paths = get_all_attachments(email_msg)  # store html attachment in attachment_dir folder
+                    print(f'{get_timestamp_string()} | consumed email attachment(s) sent from {return_email_address}')
+
+                    for html_file_path in list_of_html_file_paths:
+                        file_number = list_of_html_file_paths.index(html_file_path) + 1
+                        try:
+                            quote_obj = generate_quote_object(html_file_path)  # use html to create quote object
+                        except E as error:
+                            print(f'{get_timestamp_string()} | FAILED TO CONVERT ATTACHMENT #{file_number} - ERROR: {error}')
+                            send_conversion_failure_email(return_email_address)
+                        else:
+                            print(f"{get_timestamp_string()} | Successfully converted file #{file_number}")
+                            send_email(return_email_address, quote_obj)  # send response email through Docamatic
+                        finally:
+                            os.remove(html_file_path)  # delete html file from attachment_dir now that it's no longer needed
                 else:
-                    print(f'{get_timestamp_string()} | Email had no attachment')
+                    print(f'{get_timestamp_string()} | Email had no attachments')
+
                 print(f"{get_timestamp_string()} | deleting email #{num} from inbox")
                 con.store(num, '+FLAGS', r'(\Deleted)')  # delete email from inbox
         con.expunge()
@@ -251,7 +256,7 @@ if __name__ == "__main__":  # MAIN METHOD
         con.logout()
         time.sleep(sleep_time)
 
-    print(f'{get_timestamp_string()} | APPLICATION TERMINATING DUE TO REPEATED FAILURE...')
+    print(f'{get_timestamp_string()} | APPLICATION TERMINATING DUE TO REPEATED FAILURE TO CONNECT TO IMAP SERVER...')
 
 
 # git push heroku main   push to remote cloud repo
