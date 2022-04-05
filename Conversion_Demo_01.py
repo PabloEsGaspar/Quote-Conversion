@@ -27,7 +27,7 @@ def send_connection_failure_email():
     msg['Subject'] = 'WARNING - Quote Conversion Failure'
     msg['From'] = user
     msg['To'] = 'gaspartonnesen@gmail.com'
-    # msg['Cc'] = 'josh@kodamagroup.com'
+    msg['Cc'] = 'josh@kodamagroup.com'
     msg.set_content(
         "WARNING\n\nQUOTE CONVERSION APP HAS SHUT DOWN DUE TO REPEATED FAILURES TO CONNECT TO GMAIL'S IMAP SERVER."
         "\n\nPLEASE SERVICE ASAP.")  # sets body
@@ -43,8 +43,8 @@ def send_conversion_failure_email(return_address):  # html_file_path
     msg = EmailMessage()
     msg['Subject'] = 'WARNING - Quote Conversion Failure'
     msg['From'] = user
-    msg['To'] = 'gaspartonnesen@gmail.com'
-    # msg['To'] = 'quotes@kodamagroup.com'
+    # msg['To'] = 'gaspartonnesen@gmail.com'
+    msg['To'] = 'quotes@kodamagroup.com'
     msg['Cc'] = 'gaspartonnesen@gmail.com'
     msg.set_content('WARNING\n\nQuote conversion app failed to convert a html file that was sent by ' +
                     return_address + '.\n\nApp is still operational, but development is required before the '
@@ -92,8 +92,8 @@ def create_json_data(receiver_email, quote_object):
                 ". The html file you provided has completed the conversion process and the resulting " \
                 "pdf quote should be attached and accurate. If this is not the case please forward this email to " \
                 "gaspartonnesen@gmail.com."
-    email_data = {'to': 'gaspartonnesen@gmail.com', 'filename': file_name,
-                  # email_data = {'to': 'quotes@kodamagroup.com', 'filename': file_name,
+    # email_data = {'to': 'gaspartonnesen@gmail.com', 'filename': file_name,
+    email_data = {'to': 'quotes@kodamagroup.com', 'filename': file_name,
                   'subject': quote_obj.quote_name + ' Quote Conversion Response - Do Not Reply', 'body': text_body}
 
     data_dict['data'] = data_body
