@@ -25,7 +25,7 @@ File  | Contents
 :------------ | :------------
 Quote.py | Classes/sub-classes that represent quotes, classes contain 'populate()' methods to scrape HTML and self populate attributes
 Product.py | Classes/sub-classes that represent products, components, etc.. also contain methods to self-populate attributes
-Conversion_Demo_01.py | Main method that iteratively checks <quote.conversion@gmail.com> inbox for new emails, calls top level functions to carry out the quote conversion process, packages quote data into json request, sends post request to Docamatic API's template url   
+Conversion_Demo_01.py | Main method that iteratively checks <quote.conversion@gmail.com> inbox for new emails, calls top level functions to scrape data from HTML files, packages data into json request, and sends post request to Docamatic API's template url   
 Procfile | Command to be executed upon startup (necessary for deployment) 
 requirements.txt | Specifies dependencies (necessary for deployment)
 runtime.txt | Specifies version of Python is used (necessary for deployment)
