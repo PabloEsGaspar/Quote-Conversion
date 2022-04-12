@@ -236,7 +236,7 @@ if __name__ == "__main__":  # MAIN METHOD
                         file_number = list_of_html_file_paths.index(html_file_path) + 1
                         try:
                             quote_obj = generate_quote_object(html_file_path)  # use html to create quote object
-                        except E as error:
+                        except:
                             print(f'{get_timestamp_string()} | FAILED TO CONVERT ATTACHMENT #{file_number} - ERROR: {error}')
                             send_conversion_failure_email(return_email_address)
                         else:
