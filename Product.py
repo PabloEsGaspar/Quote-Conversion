@@ -83,8 +83,12 @@ class ConfigurableProduct(Product):
         component_rows = row.tbody.findChildren('tr')
         for r in component_rows:
             name_sku_list = r.find('td', class_='component-name').text.strip().replace('\t', '').split('\n')
-            name = name_sku_list[0]
-            sku = name_sku_list[1]
+            if len(name_sku_list) == 1:
+                name = 'Description Unavailable' # set as 'description unavailable' if name is missing
+                sku = name_sku_list[0]
+            else:
+                name = name_sku_list[0]
+                sku = name_sku_list[1]
             # qty = r.find('td', class_='quantity').text.strip()  # component qty removed
             component_obj = Component(name, sku)
             self.description.configuration.append(component_obj)
@@ -109,10 +113,15 @@ class DiscountConfigurableProduct(DiscountProduct):
     def populate(self, row):
         super().populate(row)
         component_rows = row.tbody.findChildren('tr')
+        print(len(component_rows))
         for r in component_rows:
             name_sku_list = r.find('td', class_='component-name').text.strip().replace('\t', '').split('\n')
-            name = name_sku_list[0]
-            sku = name_sku_list[1]
+            if len(name_sku_list) == 1:
+                name = 'Description Unavailable' # set as 'description unavailable' if name is missing
+                sku = name_sku_list[0]
+            else:
+                name = name_sku_list[0]
+                sku = name_sku_list[1]
             # qty = r.find('td', class_='quantity').text.strip()
             component_obj = Component(name, sku)
             self.description.configuration.append(component_obj)
