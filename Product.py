@@ -62,7 +62,7 @@ class DiscountProduct(Product):
         self.unit_price = price_info_list[0]
         self.original_unit_price = price_info_list[1]
         self.special_price_valid_to = price_info_list[2]
-        self.total = row.find('span', class_='price').text.strip()
+        self.total = row.find('td', class_='total').find('span', class_='price').text.strip()
 
     def __str__(self):
         return f'Product Description: {self.description.title}\n{self.description.subtitle}\nQuantity: {self.quantity}\nPrice Each: ' \
