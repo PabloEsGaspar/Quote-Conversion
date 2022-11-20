@@ -39,16 +39,16 @@ def send_connection_failure_email():
         smtp.send_message(msg)
 
 
-def send_conversion_failure_email(return_address, html_file_path):
+def send_conversion_failure_email(return_address, html_file_path, e):
     msg = EmailMessage()
     msg['Subject'] = 'WARNING - Quote Conversion Failure'
     msg['From'] = user
     # msg['To'] = 'gaspartonnesen@gmail.com'
     msg['To'] = 'quotes@kodamagroup.com'
     msg['Cc'] = 'gaspartonnesen@gmail.com'
-    msg.set_content('WARNING\n\nQuote conversion app failed to convert html file <' + html_file_path + '> that was sent '
-                    'by ' + return_address + '.\n\nConversion Tool is still operational, but development is required '
-                                             'before this file can be processed.')
+    msg.set_content('WARNING\n\nQuote conversion app failed to convert html file <' + html_file_path + '> that was sent'
+                    ' by ' + return_address + '.\n\nConversion Tool is still operational, but development is required '
+                    'before this file can be processed.\n\nException: ' + str(e))
     # with open(html_file_path, 'rb') as f:
     #     file_data = f.read()
     #     file_name = f.name
@@ -147,7 +147,7 @@ def get_all_attachments(msg):
             file_path = os.path.join(root_dir, file_name)
             with open(file_path, 'wb') as f:
                 f.write(part.get_payload(decode=True))
-            html_file_paths.append(file_path);
+            html_file_paths.append(file_path)
     return html_file_paths
 
 
@@ -239,7 +239,7 @@ if __name__ == "__main__":  # MAIN METHOD
                         except Exception as e:
                             print(f'{get_timestamp_string()} | FAILED TO CONVERT ATTACHMENT #{file_number} - HTML file: {html_file_path}')
                             print(f'{get_timestamp_string()} | Conversion Error: {(str(e.args[0])).encode("utf-8")}')
-                            send_conversion_failure_email(return_email_address, html_file_path)
+                            send_conversion_failure_email(return_email_address, html_file_path, e)
                         else:
                             print(f"{get_timestamp_string()} | Successfully converted file #{file_number}")
                             send_email(return_email_address, quote_obj)  # send response email through Docamatic
@@ -263,3 +263,4 @@ if __name__ == "__main__":  # MAIN METHOD
 # git push heroku main   push to remote cloud repo
 # heroku                 display list of commands
 # heroku logs --tail     live feed of console while program runs
+# Quote Conversion

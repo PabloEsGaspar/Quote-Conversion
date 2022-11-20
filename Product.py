@@ -20,7 +20,7 @@ class ConfigurableDescription(Description):
 
     def __init__(self):
         super().__init__()
-        self.configuration = []
+        self.configuration = []  # list of components
 
 
 class Product:
@@ -40,7 +40,7 @@ class Product:
         self.total = row.find('span', class_='price').text.strip()
 
     def __str__(self):
-        return f'Product Description: {self.description.title}\n{self.description.subtitle}\nQuantity: {self.quantity}' \
+        return f'Product Description: {self.description.title}\n{self.description.subtitle}\nQuantity: {self.quantity}'\
             f'\nPrice Each: {self.unit_price}\nPrice Total: {self.total}\n'
 
 
@@ -56,18 +56,17 @@ class DiscountProduct(Product):
         self.description.subtitle = row.find('span', class_='sku-desc').text.strip().replace(' ', '').replace('\t', '')\
             .replace('\n\n', '\n')
         self.quantity = row.find('p', class_='item-quantity').text.strip()
-        price_info_list = row.find('div', class_='price hp-price price-content').text.strip().replace('\t',
-                                                                                                      '').replace(
-            '\n\n', '\n').split('\n')
+        price_info_list = row.find('div', class_='price hp-price price-content').text.strip().replace('\t', '')\
+            .replace('\n\n\n', '\n\n').replace('\n\n', '\n').split('\n')
         self.unit_price = price_info_list[0]
         self.original_unit_price = price_info_list[1]
         self.special_price_valid_to = price_info_list[2]
         self.total = row.find('td', class_='total').find('span', class_='price').text.strip()
 
     def __str__(self):
-        return f'Product Description: {self.description.title}\n{self.description.subtitle}\nQuantity: {self.quantity}\nPrice Each: ' \
-            f'{self.unit_price}\nOld Price Each: {self.original_unit_price}\nPrice Each Expiration: ' \
-            f'{self.special_price_valid_to}\nPrice Total: {self.total}\n'
+        return f'Product Description: {self.description.title}\n{self.description.subtitle}\nQuantity: {self.quantity}'\
+               f'\nPrice Each: {self.unit_price}\nOld Price Each: {self.original_unit_price}\nPrice Each Expiration: '\
+               f'{self.special_price_valid_to}\nPrice Total: {self.total}\n'
 
 
 class ConfigurableProduct(Product):
@@ -82,9 +81,9 @@ class ConfigurableProduct(Product):
         super().populate(row)
         component_rows = row.tbody.findChildren('tr')
         for r in component_rows:
-            name_sku_list = r.find('td', class_='component-name').text.strip().replace('\t', '').split('\n')
+            name_sku_list = r.find('td', class_=['component-name', '']).text.strip().replace('\t', '').split('\n')
             if len(name_sku_list) == 1:
-                name = 'Description Unavailable' # set as 'description unavailable' if name is missing
+                name = 'Description Unavailable'  # set as 'description unavailable' if name is missing
                 sku = name_sku_list[0]
             else:
                 name = name_sku_list[0]
@@ -115,9 +114,9 @@ class DiscountConfigurableProduct(DiscountProduct):
         component_rows = row.tbody.findChildren('tr')
         print(len(component_rows))
         for r in component_rows:
-            name_sku_list = r.find('td', class_='component-name').text.strip().replace('\t', '').split('\n')
+            name_sku_list = r.find('td', class_=['component-name', '']).text.strip().replace('\t', '').split('\n')
             if len(name_sku_list) == 1:
-                name = 'Description Unavailable' # set as 'description unavailable' if name is missing
+                name = 'Description Unavailable'  # set as 'description unavailable' if name is missing
                 sku = name_sku_list[0]
             else:
                 name = name_sku_list[0]

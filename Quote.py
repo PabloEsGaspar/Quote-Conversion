@@ -1,4 +1,9 @@
 from Product import Product, ConfigurableProduct, DiscountConfigurableProduct, DiscountProduct
+from datetime import datetime
+
+
+def get_timestamp_string():
+    return datetime.now().strftime("%d/%m/%y - %I:%M:%S %p")
 
 
 class PurchasingInfo:
@@ -30,9 +35,9 @@ class Quote:
         self.subtotal = ''
         self.total = ''
         self.terms_and_conditions = []
-
         self.custom_tables = [{'head': 'HP Inc. Vendor Address', 'body': 'The HP, Inc. Vendor address is:\n\nHP Inc.'
-                               '\nAttn: Public Sector Sales\n3800 Quick Hill Road\nBldg 2, Suite 100'
+                                                                         '\nAttn: Public Sector Sales\n3800 Quick '
+                                                                         'Hill Road\nBldg 2, Suite 100 '
                                                                          '\nAustin, TX 78728'}]
 
     def populate(self, soup):
@@ -47,7 +52,7 @@ class Quote:
     def populate_purchasing_information(self, soup):
         purchase_info_01 = PurchasingInfo('HP Quote Number', self.quote_number)
         contract = PurchasingInfo('Contract Name', soup.find('div', class_='session-link')
-                                          .find('h4', class_='company-view').text.strip())
+                                  .find('h4', class_='company-view').text.strip())
         self.populate_terms_and_conditions(contract.value)
         purchase_info_03 = PurchasingInfo('Purchasing Instructions',
                                           'Please make PO out to HP Inc, list Partner ID: 991000721949 and Quote ID: '
@@ -85,14 +90,19 @@ class Quote:
             if bool(configurable_tag):  # check if data has sub components
                 if bool(discount):  # checks if the row has discounted price data to populate
                     product_object = DiscountConfigurableProduct()
+                    print(f'{get_timestamp_string()} | identified product of type DiscountConfigurableProduct')
                 else:
                     product_object = ConfigurableProduct()
+                    print(f'{get_timestamp_string()} | identified product of type ConfigurableProduct')
             else:
                 if bool(discount):  # checks if the row has discounted price data to populate
                     product_object = DiscountProduct()
+                    print(f'{get_timestamp_string()} | identified product of type DiscountProduct')
                 else:
                     product_object = Product()
+                    print(f'{get_timestamp_string()} | identified regular product')
             product_object.populate(row)
+            print(f'{get_timestamp_string()} | product data scraped successfully')
             self.lines.append(product_object)
 
     def populate_special_code(self, soup):
@@ -104,20 +114,21 @@ class Quote:
             self.special_pricing_code = None
 
     def populate_dates(self, soup):
-        self.quote_date = soup.find("div", class_='grey-bg').find('div', class_='col6 ccol6 orderform').find_next_sibling \
-            ('div', class_='col6 ccol6 orderform').find('div', class_='form-2col order-inputs').find_next_sibling \
-            ('div', class_='form-2col order-inputs').find('span').text.strip()
-        self.quote_expiration = soup.find("div", class_='grey-bg').find('div', class_='col6 ccol6 orderform').find_next_sibling \
-            ('div', class_='col6 ccol6 orderform').find('div', class_='form-2col order-inputs').find_next_sibling \
-            ('div', class_='form-2col order-inputs').find_next_sibling('div', class_='form-2col order-inputs') \
-            .find('span').text.strip()
+        self.quote_date = soup.find("div", class_='grey-bg').find('div', class_='col6 ccol6 orderform')\
+            .find_next_sibling('div', class_='col6 ccol6 orderform').find('div', class_='form-2col order-inputs')\
+            .find_next_sibling('div', class_='form-2col order-inputs').find('span').text.strip()
+        self.quote_expiration = soup.find("div", class_='grey-bg').find('div', class_='col6 ccol6 orderform')\
+            .find_next_sibling('div', class_='col6 ccol6 orderform').find('div', class_='form-2col order-inputs')\
+            .find_next_sibling('div', class_='form-2col order-inputs')\
+            .find_next_sibling('div', class_='form-2col order-inputs').find('span').text.strip()
 
     def populate_names(self, soup):
         self.quote_name = soup.find('h1', class_='quote-header quote-bold-header').text.strip()
 
     def populate_numbers(self, soup):
-        self.quote_number = soup.find("div", class_='grey-bg').find('div', class_='col6 ccol6 orderform').find_next_sibling \
-        ('div', class_='col6 ccol6 orderform').find('div', class_='form-2col order-inputs').find('span').text.strip()
+        self.quote_number = soup.find("div", class_='grey-bg').find('div', class_='col6 ccol6 orderform')\
+            .find_next_sibling('div', class_='col6 ccol6 orderform').find('div', class_='form-2col order-inputs')\
+            .find('span').text.strip()
         self.subtotal = soup.find('div', id='total_breakdown').find('td', class_='total_figures').text.strip()
         self.total = soup.find("div", class_='grey-bg').find('div', class_='col6 ccol6 orderform') \
             .find('div', class_='form-2col order-inputs').find_next_sibling('div', class_='form-2col order-inputs') \
@@ -136,4 +147,3 @@ class Quote:
                f'Subtotal: {self.subtotal}\nQuote Total: {self.total}' \
                f'\nContract Name: missing code retrieve contract name\n' + \
                special_pricing_code_string + '\n\n' + product_string
-
